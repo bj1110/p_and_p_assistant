@@ -3,8 +3,14 @@ project(p_and_p_assistant)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(${PROJECT_NAME}
-    src/main.cpp
-    src/entities/character.cpp
-    src/entities/warrior.cpp
-    src/mechanics/dice.cpp)
+add_executable(p_and_p_assistant)
+
+add_subdirectory(src/utils)
+
+target_sources(${PROJECT_NAME}
+    PRIVATE
+        src/main.cpp
+        src/entities/character.cpp
+        src/entities/warrior.cpp
+        src/mechanics/dice.cpp
+)

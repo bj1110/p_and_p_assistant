@@ -1,14 +1,20 @@
 #include <iostream>
 #include "entities/warrior.hpp"
 #include "mechanics/dice.hpp"
+#include "utils/logger.hpp"
+#include <sstream>
 
 int main(){
+    utils::Logger logger {utils::LogLevel::Info}; 
     entities::Warrior w {"W1"};
-    std::cout << w.name <<std::endl; 
+    logger.log(w.name);
     mechanics::Dice W10 {10};
+    std::ostringstream oss;
     for(int i=0; i<10; ++i){
-        std::cout << W10.roll() << ", ";
+        oss <<  W10.roll() << ", ";
     }
-    std::cout << std::endl; 
+    logger.log(oss.str()); 
+    logger.changeLogLevel(utils::LogLevel::Debug);
+    logger.log("Hallo"); 
     return 0;
 }

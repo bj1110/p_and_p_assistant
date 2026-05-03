@@ -7,7 +7,7 @@
 int main(){
     utils::Logger logger {utils::LogLevel::Info}; 
     entities::Warrior w {"W1"};
-    logger.log(w.name);
+    LOG(logger, w.name);
     mechanics::Dice W10 {10};
     std::ostringstream oss;
     for(int i=0; i<10; ++i){

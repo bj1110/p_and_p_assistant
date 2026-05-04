@@ -5,16 +5,14 @@
 #include <sstream>
 
 int main(){
-    utils::Logger logger {utils::LogLevel::Info}; 
     entities::Warrior w {"W1"};
-    LOG(logger, w.name);
+    LOG_INFO(w.name);
     mechanics::Dice W10 {10};
     std::ostringstream oss;
     for(int i=0; i<10; ++i){
         oss <<  W10.roll() << ", ";
     }
-    logger.log(oss.str()); 
-    logger.changeLogLevel(utils::LogLevel::Debug);
-    logger.log("Hallo"); 
+    LOG_WARN(oss.str()); 
+    LOG_ERROR("hallo"); 
     return 0;
 }

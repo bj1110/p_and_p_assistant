@@ -15,7 +15,7 @@ void Logger::log(LogLevel loglevel, std::string_view msg, std::source_location l
         << location.file_name() <<"("<< "line "<< location.line() <<"): "
         << "'" << location.function_name() <<"': "; 
     }
-    std::cout << msg <<std::endl;
+    std::cout << msg << "\033[0m" <<std::endl;
 }
 
 void Logger::changeLogLevel(const LogLevel& loglevel){
@@ -26,15 +26,15 @@ void Logger::changeLogLevel(const LogLevel& loglevel){
 std::string Logger::lvl_to_string(const LogLevel& lvl) const{
     std::string name;
     switch (lvl){
-        case Debug: name="\033[0m[DEBUG] ";
+        case Debug: name="[DEBUG] ";
             break;
-        case Info: name="\033[0m[INFO] ";
+        case Info: name="[INFO] ";
             break;
         case Warn: name="\033[35m[WARN] ";
             break;
         case Error: name="\033[31m[ERROR] ";
             break;
-        default: name="unknown";
+        default: name="[unknown] ";
     }
     return name;
 }

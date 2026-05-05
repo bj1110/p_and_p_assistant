@@ -6,7 +6,7 @@ namespace mechanics{
 
 class Dice{
 public:
-    Dice(size_t W);
+    Dice(u_int);
 
     int roll();
 

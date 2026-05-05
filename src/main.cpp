@@ -3,8 +3,13 @@
 #include "mechanics/dice.hpp"
 #include "utils/logger.hpp"
 #include <sstream>
+#include "gameboard/gameboard.hpp"
 
 int main(){
+    gameboard::Gameboard gameboard{};
+    gameboard.init(2, {2, 8, 10, 20, 100});
+    gameboard.roll_dice(20);
+    gameboard.roll_dice(22); 
     entities::Warrior w {"W1"};
     LOG_INFO(w.name);
     mechanics::Dice W10 {10};

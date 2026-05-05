@@ -2,7 +2,7 @@
 
 namespace mechanics{
 
-Dice::Dice(size_t W): W_(W){
+Dice::Dice(u_int W): W_(W){
     dist_ = std::uniform_int_distribution<>(1, W);
     seed_ = generate_seed();
     int rnd = dist_(seed_);

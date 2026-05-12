@@ -18,7 +18,9 @@ int Gameboard::roll_dice(u_int sides){
         LOG_WARN("There is no dice with that amount of sides. Cannot throw");
         return -1;
     }
-    return dice_.at(sides).roll(); 
+    int n = dice_.at(sides).roll();
+    LOG_DEBUG(std::format("Rolled {}", n)); 
+    return n; 
 }
 
 

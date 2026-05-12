@@ -4,20 +4,39 @@
 #include "utils/logger.hpp"
 #include <sstream>
 #include "gameboard/gameboard.hpp"
+#include <SFML/Graphics.hpp>
+#include "graphics/text.hpp"
 
 int main(){
+
+    sf::RenderWindow window(sf::VideoMode(800, 600), "Flap");
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(false);
+
+    graphics::Text text {};
+    
     gameboard::Gameboard gameboard{};
     gameboard.init(2, {2, 8, 10, 20, 100});
-    gameboard.roll_dice(20);
-    gameboard.roll_dice(22); 
-    entities::Warrior w {"W1"};
-    LOG_INFO(w.name);
-    mechanics::Dice W10 {10};
-    std::ostringstream oss;
-    for(int i=0; i<10; ++i){
-        oss <<  W10.roll() << ", ";
+    
+    utils::Logger::get_logger().changeLogLevel(utils::Debug); 
+
+    while(window.isOpen()){
+        sf::Event event;
+        while(window.pollEvent(event)){
+            if(event.type==sf::Event::Closed){
+                window.close();
+            }
+            if(event.type==sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::Space){
+                    int rnd = gameboard.roll_dice(20);
+                    text.setText(std::format("you rolled: {}", rnd));
+                }
+            }
+        }
+        window.clear(sf::Color::Black);
+        window.draw(text.getText());
+        window.display(); 
     }
-    LOG_WARN(oss.str()); 
-    LOG_ERROR("hallo"); 
+
     return 0;
 }

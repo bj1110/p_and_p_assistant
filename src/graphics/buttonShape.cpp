@@ -28,10 +28,10 @@ sf::Vector2f ButtonShape::getPoint(size_t index) const{
     float ct = std::cos(t);
     float st = std::sin(t);
 
-    float x = std::copysign(std::pow(std::abs(ct), 2.f / n), ct) * rectangle_size_.x;
-    float y = std::copysign(std::pow(std::abs(st), 2.f / n), st) * rectangle_size_.y;
+    float x = std::copysign(std::pow(std::abs(ct), 2.f / n), ct) * rectangle_size_.x * 0.5f;
+    float y = std::copysign(std::pow(std::abs(st), 2.f / n), st) * rectangle_size_.y * 0.5f;
 
-    return rectangle_size_ + sf::Vector2f(x, y);
+    return rectangle_size_ *0.5f + sf::Vector2f(x, y);
 }
 
 

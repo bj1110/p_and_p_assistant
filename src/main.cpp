@@ -22,13 +22,17 @@ int main(){
     
     utils::Logger::get_logger().changeLogLevel(utils::Debug); 
 
-    graphics::ButtonShape button { {70.f, 30.f}};
-    button.setPosition(300.f, 300.f); 
-    button.setFillColor(sf::Color::Green);
+    std::string msg = "hallpo ah as cas uas ";
+    graphics::Button btn(msg, {100.f, 100.f});
 
-    const std::string msg = "hallpo";
-    graphics::Button btn(msg);
-    btn.setPosition({100.f, 100.f}); 
+    msg= "hi";
+    graphics::Button b2(msg, {200.f, 200.f});
+
+    msg= "you \n have won";
+    graphics::Button b3(msg, {300.f, 300.f});
+
+    msg= "Now for for some insanly long text as this will have to be tested as well";
+    graphics::Button b4(msg, {0.f, 400.f});
 
 
     while(window.isOpen()){
@@ -46,8 +50,10 @@ int main(){
         }
         window.clear(sf::Color::Black);
         window.draw(text.getText());
-        window.draw(button); 
         window.draw(btn); 
+        window.draw(b2);
+        window.draw(b3); 
+        window.draw(b4); 
         window.display(); 
     }
 

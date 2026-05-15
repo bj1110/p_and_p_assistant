@@ -6,7 +6,7 @@ namespace graphics{
 
 class Button: public sf::Drawable{
 public:    
-    Button(const std::string& text);
+    Button(const std::string& text, sf::Vector2f pos = {0.f, 0.f});
 
     void setPosition(sf::Vector2f pos);
 
@@ -16,7 +16,6 @@ void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 ButtonShape shape_ {};
 sf::Font font_ {}; 
 sf::Text text_ {};
-sf::Vector2f pos_ = {0.f, 0.f};
 }; 
 
 } //namespace graphics

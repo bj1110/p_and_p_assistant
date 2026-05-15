@@ -5,7 +5,7 @@
 namespace graphics{
 
 
-Button::Button(const std::string& text){
+Button::Button(const std::string& text, sf::Vector2f pos){
     if (!font_.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
         LOG_ERROR("Font not found"); 
     }
@@ -13,41 +13,19 @@ Button::Button(const std::string& text){
     text_.setString(text);
     text_.setCharacterSize(20);
     text_.setFillColor(sf::Color::White);
-    text_.setPosition(pos_.x + 15.f, pos_.y + 15.f);
-    shape_.setRectangleSize({50.f, 50.f}); 
-    shape_.setPosition(pos_); 
     shape_.setFillColor(sf::Color(149, 159, 92));
 
-    sf::FloatRect bounds= text_.getGlobalBounds();
-    sf::FloatRect boxbounds = shape_.getGlobalBounds(); 
-
-    LOG_INFO(std::format("Box bounds pos ({},{}) and size ({}, {})", boxbounds.getPosition().x, boxbounds.getPosition().y, boxbounds.getSize().x, boxbounds.getSize().y)); 
-
-    LOG_INFO(std::format("Text bounds pos ({},{}) and size ({}, {})", bounds.getPosition().x, bounds.getPosition().y, bounds.getSize().x, bounds.getSize().y)); 
-
+    setPosition(pos); 
 }
 
 void Button::setPosition(sf::Vector2f pos){
-    pos_ = pos;
-    shape_.setPosition(pos_);
-    text_.setPosition(pos_.x + 5.f, pos_.y + 5.f); 
-
-    
-    sf::FloatRect bounds= text_.getGlobalBounds();
-    shape_.setRectangleSize( {bounds.getPosition().x* 0.4f, bounds.getPosition().y*0.2f});
-
-    sf::Vector2f shape_size = shape_.getGlobalBounds().getSize();
-    sf::Vector2f textpos = shape_.getPosition() + sf::Vector2f{shape_size.x/4.f , shape_size.y/4.f} ; 
-    text_.setPosition(textpos);
-    
-    sf::FloatRect boxbounds = shape_.getGlobalBounds(); 
-
-    auto text_pos = text_.getPosition();
-
-    LOG_INFO(std::format("Box bounds pos ({},{}) and size ({}, {})", boxbounds.getPosition().x, boxbounds.getPosition().y, boxbounds.getSize().x, boxbounds.getSize().y)); 
-
-    LOG_INFO(std::format("Text bounds pos ({},{}) and size ({}, {})", bounds.getPosition().x, bounds.getPosition().y, bounds.getSize().x, bounds.getSize().y)); 
-    LOG_INFO(std::format("Text pos: ({}, {})", text_pos.x, text_pos.y)); 
+    shape_.setPosition(pos);
+    sf::FloatRect bounds= text_.getLocalBounds();
+    shape_.setRectangleSize(bounds.getSize() + sf::Vector2f{10.f, 20.f});
+    text_.setOrigin(-sf::Vector2f{2.5f, 5.f}); 
+    text_.setPosition(pos);
+    std::string t = text_.getString();
+    sf::FloatRect sb = shape_.getLocalBounds(); 
 }
 
 

@@ -31,6 +31,7 @@ public:
     #define LOG_WARN(msg) (utils::Logger::get_logger()).log(utils::LogLevel::Warn, msg)
     #define LOG_ERROR(msg) (utils::Logger::get_logger()).log(utils::LogLevel::Error, msg)
     #define LOG_DEBUG(msg) (utils::Logger::get_logger()).log(utils::LogLevel::Debug, msg)
+    #define CHANGE_LOG_LEVEL(lvl) (utils::Logger::get_logger()).changeLogLevel(lvl);
 
 
 

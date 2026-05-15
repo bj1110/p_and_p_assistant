@@ -17,7 +17,7 @@ int main(){
     gameboard::Gameboard gameboard{};
     gameboard.init(2, {2, 8, 10, 20, 100});
     
-    utils::Logger::get_logger().changeLogLevel(utils::Debug); 
+    CHANGE_LOG_LEVEL(utils::Debug); 
 
     std::string msg = "hallpo ah as cas uas ";
     graphics::Button btn(msg, {100.f, 100.f});

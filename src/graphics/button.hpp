@@ -10,6 +10,10 @@ public:
 
     void setPosition(sf::Vector2f pos);
 
+    void setString(const std::string& str);
+    void setButtonColor(sf::Color color);
+    void setTextColor(sf::Color color); 
+
 private:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 

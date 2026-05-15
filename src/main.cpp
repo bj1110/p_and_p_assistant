@@ -5,7 +5,6 @@
 #include <sstream>
 #include "gameboard/gameboard.hpp"
 #include <SFML/Graphics.hpp>
-#include "graphics/text.hpp"
 #include "graphics/buttonShape.hpp"
 #include "graphics/button.hpp"
 
@@ -14,8 +13,6 @@ int main(){
     sf::RenderWindow window(sf::VideoMode(800, 600), "Pen and Paper Assistant");
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(false);
-
-    graphics::Text text {};
     
     gameboard::Gameboard gameboard{};
     gameboard.init(2, {2, 8, 10, 20, 100});
@@ -44,12 +41,12 @@ int main(){
             if(event.type==sf::Event::KeyPressed){
                 if(event.key.code == sf::Keyboard::Space){
                     int rnd = gameboard.roll_dice(20);
-                    text.setText(std::format("you rolled: {}", rnd));
+                    b4.setString(std::format("you rolled: {}", rnd));
+                    b4.setButtonColor(sf::Color::Blue); 
                 }
             }
         }
         window.clear(sf::Color::Black);
-        window.draw(text.getText());
         window.draw(btn); 
         window.draw(b2);
         window.draw(b3); 

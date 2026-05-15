@@ -34,5 +34,17 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(text_); 
 }
 
+void Button::setString(const std::string& str){
+    text_.setString(str);
+    setPosition(shape_.getPosition()); 
+}
+
+void Button::setButtonColor(sf::Color color){
+    shape_.setFillColor(color);
+}
+
+void Button::setTextColor(sf::Color color){
+    text_.setFillColor(color); 
+}
 
 } //namespace graphics

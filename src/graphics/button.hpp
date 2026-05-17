@@ -18,14 +18,17 @@ public:
 
     void isClicked(const sf::Event::MouseButtonEvent& event) const; 
     void setCallback(std::function<void()> callback); 
+    void hover(const sf::Event::MouseMoveEvent& event);
 
 private:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
+bool isMouseOnButton(const float x, const float y) const; 
 
 ButtonShape shape_ {};
 sf::Font font_ {}; 
 sf::Text text_ {};
 std::function<void()> callback_; 
+sf::Color default_button_color_ = sf::Color(150, 160, 90);
 }; 
 
 } //namespace graphics

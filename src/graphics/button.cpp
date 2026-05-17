@@ -14,7 +14,7 @@ callback_(callback)
     text_.setString(text);
     text_.setCharacterSize(20);
     text_.setFillColor(sf::Color::White);
-    shape_.setFillColor(sf::Color(149, 159, 92));
+    shape_.setFillColor(default_button_color_);
 
     setPosition(pos); 
 }
@@ -46,6 +46,7 @@ void Button::setString(const std::string& str){
 
 void Button::setButtonColor(sf::Color color){
     shape_.setFillColor(color);
+    default_button_color_ = color; 
 }
 
 void Button::setTextColor(sf::Color color){
@@ -54,18 +55,36 @@ void Button::setTextColor(sf::Color color){
 
 
 void Button::isClicked(const sf::Event::MouseButtonEvent& event) const{
-    const sf::FloatRect buttonBounds = shape_.getGlobalBounds();
-    const sf::Vector2f& buttonPos = buttonBounds.getPosition();
-    const sf::Vector2f& buttonSize = buttonBounds.getSize();
     if(event.button != sf::Mouse::Button::Left){
         return;
     }
-    if(event.x > buttonPos.x && event.x < buttonPos.x + buttonSize.x){
-        if(event.y > buttonPos.y && event.y < buttonPos.y + buttonSize.y){
-            LOG_DEBUG("Mouse clicked on Button");
-            callback_(); 
-        }
+    if(isMouseOnButton(event.x, event.y)){
+        LOG_DEBUG("Mouse clicked on Button");
+        callback_(); 
     }
+}
+
+void Button::hover(const sf::Event::MouseMoveEvent& event){
+    if(isMouseOnButton(event.x, event.y)){
+        sf::Color currColor = shape_.getFillColor();
+        shape_.setFillColor(default_button_color_ + sf::Color{30, 30, 30});
+    }
+    else{
+        shape_.setFillColor(default_button_color_); 
+    }
+}
+
+bool Button::isMouseOnButton(const float x, const float y) const{
+    const sf::FloatRect buttonBounds = shape_.getGlobalBounds();
+    const sf::Vector2f& buttonPos = buttonBounds.getPosition();
+    const sf::Vector2f& buttonSize = buttonBounds.getSize();
+    if(x < buttonPos.x || x > buttonPos.x + buttonSize.x){
+        return false;
+    }
+    if(y < buttonPos.y || y > buttonPos.y + buttonSize.y){
+        return false;
+    }
+    return true; 
 }
 
 } //namespace graphics

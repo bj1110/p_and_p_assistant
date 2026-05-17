@@ -35,6 +35,9 @@ int main(){
             if(event.type== sf::Event::MouseButtonPressed){
                 w20.isClicked(event.mouseButton); 
             }
+            if(event.type== sf::Event::MouseMoved){
+                w20.hover(event.mouseMove);
+            }
         }
         window.clear(sf::Color::Black);
         window.draw(w20);

@@ -19,17 +19,11 @@ int main(){
     
     CHANGE_LOG_LEVEL(utils::Debug); 
 
-    std::string msg = "hallpo ah as cas uas ";
-    graphics::Button btn(msg, {100.f, 100.f});
-
-    msg= "hi";
-    graphics::Button b2(msg, {200.f, 200.f});
-
-    msg= "you \n have won";
-    graphics::Button b3(msg, {300.f, 300.f});
-
-    msg= "Now for for some insanly long text as this will have to be tested as well";
-    graphics::Button b4(msg, {0.f, 400.f});
+    int w20_int = 20; 
+    graphics::Button w20("Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
+        int rnd = gameboard.roll_dice(w20_int);
+        w20.setString(std::format("you rolled: {}", rnd));
+    });
 
 
     while(window.isOpen()){
@@ -38,19 +32,12 @@ int main(){
             if(event.type==sf::Event::Closed){
                 window.close();
             }
-            if(event.type==sf::Event::KeyPressed){
-                if(event.key.code == sf::Keyboard::Space){
-                    int rnd = gameboard.roll_dice(20);
-                    b4.setString(std::format("you rolled: {}", rnd));
-                    b4.setButtonColor(sf::Color::Blue); 
-                }
+            if(event.type== sf::Event::MouseButtonPressed){
+                w20.isClicked(event.mouseButton); 
             }
         }
         window.clear(sf::Color::Black);
-        window.draw(btn); 
-        window.draw(b2);
-        window.draw(b3); 
-        window.draw(b4); 
+        window.draw(w20);
         window.display(); 
     }
 

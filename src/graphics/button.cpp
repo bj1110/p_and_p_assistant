@@ -1,11 +1,12 @@
 #include "button.hpp"
-#include "utils/logger.hpp"
 
 
 namespace graphics{
 
 
-Button::Button(const std::string& text, sf::Vector2f pos){
+Button::Button(const std::string& text, sf::Vector2f pos, std::function<void()> callback):
+callback_(callback)
+{
     if (!font_.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
         LOG_ERROR("Font not found"); 
     }
@@ -16,6 +17,10 @@ Button::Button(const std::string& text, sf::Vector2f pos){
     shape_.setFillColor(sf::Color(149, 159, 92));
 
     setPosition(pos); 
+}
+
+void Button::setCallback(std::function<void()> callback){
+    callback_= callback; 
 }
 
 void Button::setPosition(sf::Vector2f pos){
@@ -45,6 +50,22 @@ void Button::setButtonColor(sf::Color color){
 
 void Button::setTextColor(sf::Color color){
     text_.setFillColor(color); 
+}
+
+
+void Button::isClicked(const sf::Event::MouseButtonEvent& event) const{
+    const sf::FloatRect buttonBounds = shape_.getGlobalBounds();
+    const sf::Vector2f& buttonPos = buttonBounds.getPosition();
+    const sf::Vector2f& buttonSize = buttonBounds.getSize();
+    if(event.button != sf::Mouse::Button::Left){
+        return;
+    }
+    if(event.x > buttonPos.x && event.x < buttonPos.x + buttonSize.x){
+        if(event.y > buttonPos.y && event.y < buttonPos.y + buttonSize.y){
+            LOG_DEBUG("Mouse clicked on Button");
+            callback_(); 
+        }
+    }
 }
 
 } //namespace graphics

@@ -20,6 +20,8 @@ public:
     void setCallback(std::function<void()> callback); 
     void onMouseHover(const sf::Event::MouseMoveEvent& event);
 
+    void handleEvent(const sf::Event& event);
+
 private:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 bool isMouseOnButton(const float x, const float y) const; 

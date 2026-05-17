@@ -84,4 +84,13 @@ bool Button::isMouseOnButton(const float x, const float y) const{
     return true; 
 }
 
+void Button::handleEvent(const sf::Event& event){
+    if(event.type == sf::Event::MouseButtonPressed){
+        handleMouseClick(event.mouseButton);
+    }
+    if(event.type == sf::Event::MouseMoved){
+        onMouseHover(event.mouseMove);
+    }
+}
+
 } //namespace graphics

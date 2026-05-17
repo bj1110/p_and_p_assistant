@@ -36,12 +36,7 @@ int main(){
             if(event.type==sf::Event::Closed){
                 window.close();
             }
-            if(event.type== sf::Event::MouseButtonPressed){
-                w20.handleMouseClick(event.mouseButton); 
-            }
-            if(event.type== sf::Event::MouseMoved){
-                w20.onMouseHover(event.mouseMove);
-            }
+            w20.handleEvent(event); 
         }
         window.clear(sf::Color::Black);
         window.draw(w20);

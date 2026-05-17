@@ -5,8 +5,7 @@
 #include <sstream>
 #include "gameboard/gameboard.hpp"
 #include <SFML/Graphics.hpp>
-#include "graphics/buttonShape.hpp"
-#include "graphics/button.hpp"
+#include "graphics/resizingButton.hpp"
 
 int main(){
 
@@ -24,7 +23,7 @@ int main(){
     }
 
     int w20_int = 20; 
-    graphics::Button w20(font, "Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
+    graphics::resizingButton w20(font, "Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
         int rnd = gameboard.roll_dice(w20_int);
         w20.setString(std::format("you rolled: {}", rnd));
     });

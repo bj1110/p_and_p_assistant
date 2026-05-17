@@ -1,10 +1,10 @@
-#include "button.hpp"
+#include "buttonTemplate.hpp"
 
 
 namespace graphics{
 
 
-Button::Button(sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
+ButtonTemplate::ButtonTemplate(sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
 callback_(callback)
 {
     text_.setFont(font); 
@@ -12,46 +12,41 @@ callback_(callback)
     text_.setCharacterSize(20);
     text_.setFillColor(sf::Color::White);
     shape_.setFillColor(default_button_color_);
-
     setPosition(pos); 
 }
 
-void Button::setCallback(std::function<void()> callback){
+void ButtonTemplate::setCallback(std::function<void()> callback){
     callback_= callback; 
 }
 
-void Button::setPosition(sf::Vector2f pos){
+void ButtonTemplate::setPosition(sf::Vector2f pos){
     shape_.setPosition(pos);
-    sf::FloatRect bounds= text_.getLocalBounds();
-    shape_.setRectangleSize(bounds.getSize() + sf::Vector2f{10.f, 20.f});
     text_.setOrigin(-sf::Vector2f{2.5f, 5.f}); 
     text_.setPosition(pos);
-    std::string t = text_.getString();
-    sf::FloatRect sb = shape_.getLocalBounds(); 
 }
 
 
-void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+void ButtonTemplate::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(shape_);
     target.draw(text_); 
 }
 
-void Button::setString(const std::string& str){
+void ButtonTemplate::setString(const std::string& str){
     text_.setString(str);
-    setPosition(shape_.getPosition()); 
+    resize(); 
 }
 
-void Button::setButtonColor(sf::Color color){
+void ButtonTemplate::setButtonColor(sf::Color color){
     shape_.setFillColor(color);
     default_button_color_ = color; 
 }
 
-void Button::setTextColor(sf::Color color){
+void ButtonTemplate::setTextColor(sf::Color color){
     text_.setFillColor(color); 
 }
 
 
-void Button::handleMouseClick(const sf::Event::MouseButtonEvent& event) const{
+void ButtonTemplate::handleMouseClick(const sf::Event::MouseButtonEvent& event) const{
     if(event.button != sf::Mouse::Button::Left){
         return;
     }
@@ -61,7 +56,7 @@ void Button::handleMouseClick(const sf::Event::MouseButtonEvent& event) const{
     }
 }
 
-void Button::onMouseHover(const sf::Event::MouseMoveEvent& event){
+void ButtonTemplate::onMouseHover(const sf::Event::MouseMoveEvent& event){
     if(isMouseOnButton(event.x, event.y)){
         sf::Color currColor = shape_.getFillColor();
         shape_.setFillColor(default_button_color_ + sf::Color{30, 30, 30});
@@ -71,7 +66,7 @@ void Button::onMouseHover(const sf::Event::MouseMoveEvent& event){
     }
 }
 
-bool Button::isMouseOnButton(const float x, const float y) const{
+bool ButtonTemplate::isMouseOnButton(const float x, const float y) const{
     const sf::FloatRect buttonBounds = shape_.getGlobalBounds();
     const sf::Vector2f& buttonPos = buttonBounds.getPosition();
     const sf::Vector2f& buttonSize = buttonBounds.getSize();
@@ -84,7 +79,7 @@ bool Button::isMouseOnButton(const float x, const float y) const{
     return true; 
 }
 
-void Button::handleEvent(const sf::Event& event){
+void ButtonTemplate::handleEvent(const sf::Event& event){
     if(event.type == sf::Event::MouseButtonPressed){
         handleMouseClick(event.mouseButton);
     }

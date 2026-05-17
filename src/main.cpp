@@ -16,11 +16,15 @@ int main(){
     
     gameboard::Gameboard gameboard{};
     gameboard.init(2, {2, 8, 10, 20, 100});
-    
-    CHANGE_LOG_LEVEL(utils::Debug); 
+
+    //TODO: localize font in project 
+    sf::Font font {};
+    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
+        LOG_ERROR("Font not found"); 
+    }
 
     int w20_int = 20; 
-    graphics::Button w20("Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
+    graphics::Button w20(font, "Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
         int rnd = gameboard.roll_dice(w20_int);
         w20.setString(std::format("you rolled: {}", rnd));
     });
@@ -33,10 +37,10 @@ int main(){
                 window.close();
             }
             if(event.type== sf::Event::MouseButtonPressed){
-                w20.isClicked(event.mouseButton); 
+                w20.handleMouseClick(event.mouseButton); 
             }
             if(event.type== sf::Event::MouseMoved){
-                w20.hover(event.mouseMove);
+                w20.onMouseHover(event.mouseMove);
             }
         }
         window.clear(sf::Color::Black);

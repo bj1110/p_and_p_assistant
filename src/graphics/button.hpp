@@ -8,7 +8,7 @@ namespace graphics{
 
 class Button: public sf::Drawable{
 public:    
-    Button(const std::string& text, sf::Vector2f pos = {0.f, 0.f}, std::function<void()> callback = [](){LOG_ERROR("No callback set");});
+    Button(sf::Font& font, const std::string& text, sf::Vector2f pos = {0.f, 0.f}, std::function<void()> callback = [](){LOG_ERROR("No callback set");});
 
     void setPosition(sf::Vector2f pos);
 
@@ -16,16 +16,15 @@ public:
     void setButtonColor(sf::Color color);
     void setTextColor(sf::Color color); 
 
-    void isClicked(const sf::Event::MouseButtonEvent& event) const; 
+    void handleMouseClick(const sf::Event::MouseButtonEvent& event) const; 
     void setCallback(std::function<void()> callback); 
-    void hover(const sf::Event::MouseMoveEvent& event);
+    void onMouseHover(const sf::Event::MouseMoveEvent& event);
 
 private:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 bool isMouseOnButton(const float x, const float y) const; 
 
-ButtonShape shape_ {};
-sf::Font font_ {}; 
+ButtonShape shape_ {}; 
 sf::Text text_ {};
 std::function<void()> callback_; 
 sf::Color default_button_color_ = sf::Color(150, 160, 90);

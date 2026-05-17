@@ -4,13 +4,10 @@
 namespace graphics{
 
 
-Button::Button(const std::string& text, sf::Vector2f pos, std::function<void()> callback):
+Button::Button(sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
 callback_(callback)
 {
-    if (!font_.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
-        LOG_ERROR("Font not found"); 
-    }
-    text_.setFont(font_); 
+    text_.setFont(font); 
     text_.setString(text);
     text_.setCharacterSize(20);
     text_.setFillColor(sf::Color::White);
@@ -54,7 +51,7 @@ void Button::setTextColor(sf::Color color){
 }
 
 
-void Button::isClicked(const sf::Event::MouseButtonEvent& event) const{
+void Button::handleMouseClick(const sf::Event::MouseButtonEvent& event) const{
     if(event.button != sf::Mouse::Button::Left){
         return;
     }
@@ -64,7 +61,7 @@ void Button::isClicked(const sf::Event::MouseButtonEvent& event) const{
     }
 }
 
-void Button::hover(const sf::Event::MouseMoveEvent& event){
+void Button::onMouseHover(const sf::Event::MouseMoveEvent& event){
     if(isMouseOnButton(event.x, event.y)){
         sf::Color currColor = shape_.getFillColor();
         shape_.setFillColor(default_button_color_ + sf::Color{30, 30, 30});

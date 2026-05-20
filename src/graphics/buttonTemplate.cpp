@@ -21,8 +21,7 @@ void ButtonTemplate::setCallback(std::function<void()> callback){
 
 void ButtonTemplate::setPosition(sf::Vector2f pos){
     shape_.setPosition(pos);
-    text_.setOrigin(-sf::Vector2f{2.5f, 5.f}); 
-    text_.setPosition(pos);
+    placeText(); 
 }
 
 
@@ -86,6 +85,22 @@ void ButtonTemplate::handleEvent(const sf::Event& event){
     if(event.type == sf::Event::MouseMoved){
         onMouseHover(event.mouseMove);
     }
+}
+
+void ButtonTemplate::placeText(){
+    sf::FloatRect text_bounds = text_.getLocalBounds(); 
+
+    text_.setOrigin({
+        text_bounds.getPosition().x + text_bounds.getSize().x / 2.f,
+        text_bounds.getPosition().y + text_bounds.getSize().y / 2.f
+    });
+   
+    sf::FloatRect shape_bounds = shape_.getGlobalBounds();
+
+    text_.setPosition({
+        shape_bounds.getPosition().x + shape_bounds.getSize().x / 2.f,
+        shape_bounds.getPosition().y + shape_bounds.getSize().y / 2.f
+    });
 }
 
 } //namespace graphics

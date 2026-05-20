@@ -29,11 +29,13 @@ public:
 protected:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 bool isMouseOnButton(const float x, const float y) const; 
+void placeText();
 
 ButtonShape shape_ {}; 
 sf::Text text_ {};
 std::function<void()> callback_; 
 sf::Color default_button_color_ = sf::Color(150, 160, 90);
+sf::Vector2f padding_ {10.f, 20.f}; 
 }; 
 
 } //namespace graphics

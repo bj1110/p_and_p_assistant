@@ -1,6 +1,6 @@
 #include "gameboard.hpp"
 
-namespace gameboard
+namespace core
 {
 
 void Gameboard::init(u_int num_players, const std::vector<u_int>& dice){
@@ -29,4 +29,4 @@ const std::unordered_map<u_int, mechanics::Dice> Gameboard::getAllDice() const{
 
 
 
-} // namespace gameboard
+} // namespace core

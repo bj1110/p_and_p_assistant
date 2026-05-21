@@ -87,6 +87,10 @@ void ButtonTemplate::handleEvent(const sf::Event& event){
     }
 }
 
+const sf::Vector2f ButtonTemplate::getSize()const{
+    return shape_.getLocalBounds().getSize();
+}
+
 void ButtonTemplate::placeText(){
     sf::FloatRect text_bounds = text_.getLocalBounds(); 
 

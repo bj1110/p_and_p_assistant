@@ -7,7 +7,7 @@
 #include <unordered_map>
 #include <memory>
 
-namespace gameboard{
+namespace core{
 
 class Gameboard {
 public:
@@ -30,4 +30,4 @@ private:
 
 
 
-} //namespace gameboard
+} //namespace core

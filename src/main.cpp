@@ -3,26 +3,28 @@
 #include "mechanics/dice.hpp"
 #include "utils/logger.hpp"
 #include <sstream>
-#include "gameboard/gameboard.hpp"
+#include "core/gameboard.hpp"
 #include <SFML/Graphics.hpp>
 #include "graphics/dicemenu.hpp"
+#include "core/settings.hpp"
 
 int main(){
-
-    sf::RenderWindow window(sf::VideoMode(800, 600), "Pen and Paper Assistant");
-    window.setFramerateLimit(60);
-    window.setVerticalSyncEnabled(false);
-    
-    std::shared_ptr<gameboard::Gameboard> gameboard = std::make_shared<gameboard::Gameboard>();
-    gameboard->init(2, {2, 8, 10, 20, 100});
-
+    std::shared_ptr<core::Settings> settings = std::make_shared<core::Settings>(sf::Vector2u{800, 600});
     //TODO: localize font in project 
-    sf::Font font {};
-    if (!font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
+    if (!settings->font.loadFromFile("/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf")){
         LOG_ERROR("Font not found"); 
     }
 
-    graphics::DiceMenu dicemenu {font, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
+    sf::RenderWindow window(sf::VideoMode(settings->windowsize.x, settings->windowsize.y), "Pen and Paper Assistant");
+    window.setFramerateLimit(60);
+    window.setVerticalSyncEnabled(false);
+    
+    std::shared_ptr<core::Gameboard> gameboard = std::make_shared<core::Gameboard>();
+    gameboard->init(2, {2, 8, 10, 20, 100});
+
+
+
+    graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
     
 
 

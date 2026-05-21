@@ -13,7 +13,7 @@ target_include_directories(p_and_p_assistant
 )
 
 add_subdirectory(src/utils)
-add_subdirectory(src/gameboard)
+add_subdirectory(src/core)
 add_subdirectory(src/graphics)
 
 target_sources(${PROJECT_NAME}

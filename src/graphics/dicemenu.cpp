@@ -3,7 +3,7 @@
 namespace graphics{
 
 DiceMenu::DiceMenu(const sf::Font& font, std::shared_ptr<gameboard::Gameboard> gameboard, sf::Vector2f btn_size, sf::Vector2f margin):
-gameboard_(gameboard), button_sizes_(btn_size)
+gameboard_(gameboard), button_sizes_(btn_size), expandButton_(font, ">", {0.f, 300.f}, [this](){hide_menu_=!hide_menu_;})
 {
     LOG_INFO("Initializing Dice Menu");
     int curr_btn_num=0; 
@@ -32,6 +32,10 @@ std::function<void()> DiceMenu::createButtonLambda(FixedSizeButton* btn, u_int s
 }
 
 void DiceMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    target.draw(expandButton_);
+    if(hide_menu_){
+        return;
+    }
     for(const auto& btn: buttons_){
         target.draw(*btn);
     }
@@ -41,6 +45,7 @@ void DiceMenu::handleEvent(const sf::Event& event){
     for(const auto& btn: buttons_){
         btn->handleEvent(event); 
     }
+    expandButton_.handleEvent(event); 
 }
 
 

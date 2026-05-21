@@ -8,7 +8,7 @@ namespace graphics{
 
 class ButtonTemplate: public sf::Drawable{
 public:    
-    ButtonTemplate(sf::Font& font, const std::string& text, sf::Vector2f pos = {0.f, 0.f}, std::function<void()> callback = [](){LOG_ERROR("No callback set");});
+    ButtonTemplate(const sf::Font& font, const std::string& text, sf::Vector2f pos = {0.f, 0.f}, std::function<void()> callback = [](){LOG_ERROR("No callback set");});
 
     virtual ~ButtonTemplate() = default; 
 

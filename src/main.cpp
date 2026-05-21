@@ -5,8 +5,7 @@
 #include <sstream>
 #include "gameboard/gameboard.hpp"
 #include <SFML/Graphics.hpp>
-#include "graphics/resizingButton.hpp"
-#include "graphics/fixedSizeButton.hpp"
+#include "graphics/dicemenu.hpp"
 
 int main(){
 
@@ -14,8 +13,8 @@ int main(){
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(false);
     
-    gameboard::Gameboard gameboard{};
-    gameboard.init(2, {2, 8, 10, 20, 100});
+    std::shared_ptr<gameboard::Gameboard> gameboard = std::make_shared<gameboard::Gameboard>();
+    gameboard->init(2, {2, 8, 10, 20, 100});
 
     //TODO: localize font in project 
     sf::Font font {};
@@ -23,22 +22,8 @@ int main(){
         LOG_ERROR("Font not found"); 
     }
 
-    // const auto rollDiceLambda = [&](){
-    //     int rnd = gameboard.roll_dice(w100_int);
-    //     w100.setString(std::format("you rolled: {}", rnd));
-    // };
-
-    int w20_int = 20; 
-    graphics::ResizingButton w20(font, "Click to Roll W20", {50.f, 50.f}, [&gameboard, &w20, &w20_int](){
-        int rnd = gameboard.roll_dice(w20_int);
-        w20.setString(std::format("you rolled: {}", rnd));
-    });
-
-    int w100_int = 100;
-    graphics::FixedSizeButton w100(font, "Click to Roll W100", {200.f, 100.f}, {100.f, 30.f}, [&](){
-        int rnd = gameboard.roll_dice(w100_int);
-        w100.setString(std::format("you rolled: {}", rnd));
-    }); 
+    graphics::DiceMenu dicemenu {font, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
+    
 
 
     while(window.isOpen()){
@@ -47,12 +32,10 @@ int main(){
             if(event.type==sf::Event::Closed){
                 window.close();
             }
-            w20.handleEvent(event); 
-            w100.handleEvent(event); 
+            dicemenu.handleEvent(event); 
         }
         window.clear(sf::Color::Black);
-        window.draw(w20);
-        window.draw(w100); 
+        window.draw(dicemenu); 
         window.display(); 
     }
 

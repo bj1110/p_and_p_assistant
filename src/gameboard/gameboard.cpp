@@ -15,12 +15,16 @@ void Gameboard::init(u_int num_players, const std::vector<u_int>& dice){
 
 int Gameboard::roll_dice(u_int sides){
     if(!dice_.contains(sides)){
-        LOG_WARN("There is no dice with that amount of sides. Cannot throw");
+        LOG_WARN(std::format("There is no dice with {} amount of sides.", sides));
         return -1;
     }
     int n = dice_.at(sides).roll();
     LOG_DEBUG(std::format("Rolled {}", n)); 
     return n; 
+}
+
+const std::unordered_map<u_int, mechanics::Dice> Gameboard::getAllDice() const{
+    return dice_; 
 }
 
 

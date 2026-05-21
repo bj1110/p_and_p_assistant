@@ -4,7 +4,7 @@
 namespace graphics{
 
 
-ButtonTemplate::ButtonTemplate(sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
+ButtonTemplate::ButtonTemplate(const sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
 callback_(callback)
 {
     text_.setFont(font); 

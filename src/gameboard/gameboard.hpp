@@ -16,7 +16,7 @@ public:
     void init(u_int num_players, const std::vector<u_int>& dice);
 
     int roll_dice(u_int sides);
-
+    const std::unordered_map<u_int, mechanics::Dice> getAllDice() const;
 
 private:
 

@@ -14,8 +14,19 @@ namespace graphics
 class DiceMenu : public sf::Drawable{
 public:
 
-    DiceMenu(std::shared_ptr<core::Settings> settings, std::shared_ptr<core::Gameboard> gameboard, sf::Vector2f btn_size, sf::Vector2f margin);
+    /**
+     * Constructor
+     * 
+     * @param settings      Shared Pointer to the settings containing the sf::Font & sf::Vector2u windowsize
+     * @param gameboard     Shared Pointer to the gameboard
+     * @param btn_size      Size that the Buttons should have
+     * @param margin        Buttons margin in x and y direction
+     */
+    explicit DiceMenu(std::shared_ptr<core::Settings> settings, std::shared_ptr<core::Gameboard> gameboard, sf::Vector2f btn_size, sf::Vector2f margin);
 
+    /**
+     * Function that calls the event handler in each stored Button
+     */
     void handleEvent(const sf::Event& event); 
 
 

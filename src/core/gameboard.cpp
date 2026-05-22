@@ -28,5 +28,10 @@ const std::unordered_map<u_int, mechanics::Dice> Gameboard::getAllDice() const{
 }
 
 
+void Gameboard::add_character(std::unique_ptr<entities::Character> character){
+    characters_.emplace_back(std::move(character)); 
+} 
+
+
 
 } // namespace core

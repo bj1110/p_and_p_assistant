@@ -18,10 +18,12 @@ public:
     int roll_dice(u_int sides);
     const std::unordered_map<u_int, mechanics::Dice> getAllDice() const;
 
+    void add_character(std::unique_ptr<entities::Character> character); 
+
 private:
 
-    std::vector<entities::Character> characters_;
-    std::unordered_map<u_int, mechanics::Dice> dice_; 
+    std::vector<std::unique_ptr<entities::Character>> characters_ {};
+    std::unordered_map<u_int, mechanics::Dice> dice_ {}; 
     u_int num_players_ = 0;
 
 

@@ -22,6 +22,8 @@ int main(){
     std::shared_ptr<core::Gameboard> gameboard = std::make_shared<core::Gameboard>();
     gameboard->init(2, {2, 8, 10, 20, 100});
 
+    auto player1 = std::make_unique<entities::Warrior>("Pete"); 
+    gameboard->add_character(std::move(player1)); 
 
 
     graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 

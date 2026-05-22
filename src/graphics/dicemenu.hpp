@@ -8,7 +8,9 @@
 
 namespace graphics
 {
-
+/**
+ * Class for left Menu to hide Dice-Buttons
+ */
 class DiceMenu : public sf::Drawable{
 public:
 
@@ -24,11 +26,12 @@ private:
 
 private:
     std::vector<std::unique_ptr<FixedSizeButton>> buttons_ {}; 
-    sf::Vector2f button_sizes_ {};
+    sf::Vector2f button_sizes_ {10.f, 10.f};
+    sf::Vector2f margin_ {10.f, 10.f}; 
     std::shared_ptr<core::Settings> settings_ {}; 
     std::shared_ptr<core::Gameboard> gameboard_ {}; 
     std::unique_ptr<ResizingButton> expandButton_ {}; 
-    std::unique_ptr<FixedSizeButton> result_button_ {}; 
+    sf::RectangleShape background_ {{10.f, 10.f}}; 
     bool hide_menu_ = true;
 
 };

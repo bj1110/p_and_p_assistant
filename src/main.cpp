@@ -28,8 +28,26 @@ int main(){
 
 
     graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
-    graphics::SelectionMenu selectionmenu {settings, {"eins"}, {[](){}}, {100.f, 100.f}, {50.f, 60.f}}; 
+    sf::Text txt {"eins", settings->font, 20}; 
+    graphics::SelectionMenuEntry entry {txt, [](const sf::Event& event, std::weak_ptr<graphics::SelectionMenu> self, size_t idx){
+        if(event.type == sf::Event::MouseButtonPressed){
+            if(event.mouseButton.button == sf::Mouse::Button::Left){
+                auto lock = self.lock();
+                if(lock){
+                    lock->highlightSelection(idx); 
+                }
+            }
+        }
+        else if(event.type ==sf::Event::MouseMoved){
 
+        }
+    }}; 
+    auto selectionmenu = std::make_shared<graphics::SelectionMenu>(
+        settings,
+        std::vector<graphics::SelectionMenuEntry>{entry},
+        sf::Vector2f{100.f, 100.f},
+        sf::Vector2f{50.f, 60.f}
+    );
 
     while(window.isOpen()){
         sf::Event event;
@@ -38,10 +56,11 @@ int main(){
                 window.close();
             }
             dicemenu.handleEvent(event); 
+            selectionmenu->handleEvent(event); 
         }
         window.clear(sf::Color::Black);
         window.draw(dicemenu); 
-        window.draw(selectionmenu);
+        window.draw(*selectionmenu);
         window.display(); 
     }
 

@@ -5,34 +5,48 @@ namespace graphics
 {
 
 
-SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<std::string>& descriptors, const std::vector<std::function<void()>>& callbacks, sf::Vector2f positon, sf::Vector2f size_per_element)
-:settings_(settings), descriptors_(descriptors), callbacks_(callbacks), position_(positon), size_per_element_(size_per_element){
+SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element) 
+:settings_(settings), entries_(entries), position_(position), size_per_element_(size_per_element){
     LOG_INFO("Initilizing Selection Menu"); 
-    size_t num_opts = descriptors.size(); 
-    if(num_opts != callbacks.size()){
-        LOG_ERROR("Number of options does not equal the number of callbacks");
-    }
+    size_t num_opts = entries.size(); 
+
     background_.setSize({size_per_element.x, num_opts * size_per_element_.y});
     background_.setFillColor(sf::Color::White);
     background_.setPosition(position_); 
-    texts_.reserve(num_opts);
-    int i=0; 
-    for(const std::string& elem: descriptors_){
-        sf::Text txt {elem,settings_->font, 20};
-        txt.setPosition({position_.x, (i* size_per_element.y)+ position_.y});
+    for(auto& entry:entries_){
+        sf::Text& txt = entry.text; 
+        txt.setPosition(position_); 
         txt.setFillColor(sf::Color::Blue); 
-        texts_.emplace_back(txt);
-        LOG_INFO(std::format("Position of Text {}, of background {}", to_string(txt.getPosition()), to_string(background_.getPosition()))); 
     }
 }
 
+void SelectionMenu::handleEvent(const sf::Event& event){
+    for(size_t i=0; i<entries_.size(); ++i){
+        sf::Vector2f mouse_pos {event.mouseButton.x, event.mouseButton.y};
+        if(entries_.at(i).text.getGlobalBounds().contains(mouse_pos)){
+            entries_.at(i).callback(event, this->shared_from_this(), i);
+        }
+    }
+}
+
+void SelectionMenu::highlightSelection(size_t idx){
+    if(idx >= entries_.size()){
+        LOG_ERROR("Access beyond entriey boundaries");
+        return;
+    }
+    sf::Text& txt = entries_.at(idx).text; 
+    txt.setOutlineColor(sf::Color::Red);
+    txt.setOutlineThickness(3); 
+
+}
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(background_); 
-    for(const sf::Text txt: texts_){
-        target.draw(txt);
+    for(const SelectionMenuEntry& entry:  entries_){
+        target.draw(entry.text);
     }
 }
+
 
 
 

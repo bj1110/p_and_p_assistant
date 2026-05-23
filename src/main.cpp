@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "graphics/dicemenu.hpp"
 #include "core/settings.hpp"
+#include "graphics/selectionmenu.hpp"
 
 int main(){
     std::shared_ptr<core::Settings> settings = std::make_shared<core::Settings>(sf::Vector2u{800, 600});
@@ -27,7 +28,7 @@ int main(){
 
 
     graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
-    
+    graphics::SelectionMenu selectionmenu {settings, {"eins"}, {[](){}}, {100.f, 100.f}, {50.f, 60.f}}; 
 
 
     while(window.isOpen()){
@@ -40,6 +41,7 @@ int main(){
         }
         window.clear(sf::Color::Black);
         window.draw(dicemenu); 
+        window.draw(selectionmenu);
         window.display(); 
     }
 

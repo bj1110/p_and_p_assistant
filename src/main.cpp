@@ -46,7 +46,8 @@ int main(){
         settings,
         std::vector<graphics::SelectionMenuEntry>{entry},
         sf::Vector2f{100.f, 100.f},
-        sf::Vector2f{50.f, 60.f}
+        2.f* txt.getLocalBounds().getSize(),
+        sf::Vector2f{10.f, 5.f}
     );
 
     while(window.isOpen()){

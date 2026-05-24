@@ -19,7 +19,7 @@ struct SelectionMenuEntry{
 class SelectionMenu: public sf::Drawable, public std::enable_shared_from_this<SelectionMenu> {
 
 public:
-SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element); 
+SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin); 
 
 void handleEvent(const sf::Event& event);
 
@@ -36,7 +36,7 @@ std::vector<SelectionMenuEntry> entries_;
 sf::Vector2f position_ {}; 
 sf::Vector2f size_per_element_ {}; 
 sf::RectangleShape background_ {}; 
-
+sf::Vector2f margin_ {}; 
 };
 
 

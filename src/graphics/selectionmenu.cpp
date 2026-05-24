@@ -5,17 +5,17 @@ namespace graphics
 {
 
 
-SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element) 
-:settings_(settings), entries_(entries), position_(position), size_per_element_(size_per_element){
+SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin) 
+:settings_(settings), entries_(entries), position_(position), size_per_element_(size_per_element), margin_(margin){
     LOG_INFO("Initilizing Selection Menu"); 
     size_t num_opts = entries.size(); 
 
-    background_.setSize({size_per_element.x, num_opts * size_per_element_.y});
+    background_.setSize({size_per_element.x +margin.x, (num_opts * size_per_element_.y) + margin.y});
     background_.setFillColor(sf::Color::White);
     background_.setPosition(position_); 
     for(auto& entry:entries_){
         sf::Text& txt = entry.text; 
-        txt.setPosition(position_); 
+        txt.setPosition(position_+margin_); 
         txt.setFillColor(sf::Color::Blue); 
     }
 }

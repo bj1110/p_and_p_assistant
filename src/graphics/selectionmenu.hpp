@@ -10,16 +10,23 @@ namespace graphics
 {
 
 class SelectionMenu; 
+using SelectionMenuCallback = std::function<void(const sf::Event&, std::weak_ptr<SelectionMenu>, size_t)>;
+
+struct SelectionMenuItem{
+    std::string text {};
+    SelectionMenuCallback callback {};
+};
 
 struct SelectionMenuEntry{
     sf::Text text {};
-    std::function<void(const sf::Event&, std::weak_ptr<SelectionMenu>, size_t)> callback {};
+    SelectionMenuCallback callback {};
+    sf::RectangleShape text_box {}; 
 };
 
 class SelectionMenu: public sf::Drawable, public std::enable_shared_from_this<SelectionMenu> {
 
 public:
-SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin); 
+SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuItem>& items, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin); 
 
 void handleEvent(const sf::Event& event);
 
@@ -34,8 +41,7 @@ private:
 std::shared_ptr<core::Settings> settings_ = nullptr; 
 std::vector<SelectionMenuEntry> entries_; 
 sf::Vector2f position_ {}; 
-sf::Vector2f size_per_element_ {}; 
-sf::RectangleShape background_ {}; 
+sf::Vector2f size_per_element_ {};
 sf::Vector2f margin_ {}; 
 };
 

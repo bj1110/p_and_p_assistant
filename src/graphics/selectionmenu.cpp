@@ -5,18 +5,21 @@ namespace graphics
 {
 
 
-SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuEntry>& entries, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin) 
-:settings_(settings), entries_(entries), position_(position), size_per_element_(size_per_element), margin_(margin){
+SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuItem>& items, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin) 
+:settings_(settings), position_(position), size_per_element_(size_per_element), margin_(margin){
     LOG_INFO("Initilizing Selection Menu"); 
-    size_t num_opts = entries.size(); 
-
-    background_.setSize({size_per_element.x +margin.x, (num_opts * size_per_element_.y) + margin.y});
-    background_.setFillColor(sf::Color::White);
-    background_.setPosition(position_); 
-    for(auto& entry:entries_){
-        sf::Text& txt = entry.text; 
-        txt.setPosition(position_+margin_); 
-        txt.setFillColor(sf::Color::Blue); 
+    int elem_num=0;  
+    for(auto& item:items){
+        sf::Text text {item.text,settings->font, 20};
+        sf::Vector2f elem_pos = {position};
+        elem_pos.y += (static_cast<float>(elem_num)* (size_per_element.y + 2.f*margin_.y) ); 
+        text.setPosition(elem_pos +margin_); 
+        text.setFillColor(sf::Color::Black); 
+        sf::RectangleShape rect {size_per_element_ +2.f*margin_};
+        rect.setPosition(elem_pos);
+        rect.setFillColor(sf::Color::White);
+        entries_.emplace_back(text, item.callback, rect);
+        elem_num++; 
     }
 }
 
@@ -35,7 +38,7 @@ void SelectionMenu::handleEvent(const sf::Event& event){
         default: return; 
     } 
     for(size_t i=0; i<entries_.size(); ++i){
-        if(entries_.at(i).text.getGlobalBounds().contains(mouse_pos)){
+        if(entries_.at(i).text_box.getGlobalBounds().contains(mouse_pos)){
             entries_.at(i).callback(event, this->shared_from_this(), i);
         }
     }
@@ -46,15 +49,14 @@ void SelectionMenu::highlightSelection(size_t idx){
         LOG_ERROR("Access beyond entriey boundaries");
         return;
     }
-    sf::Text& txt = entries_.at(idx).text; 
-    txt.setOutlineColor(sf::Color::Red);
-    txt.setOutlineThickness(3); 
-
+    sf::RectangleShape& textbox = entries_.at(idx).text_box;
+    textbox.setOutlineColor(sf::Color::Red);
+    textbox.setOutlineThickness(-4.f);
 }
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    target.draw(background_); 
     for(const SelectionMenuEntry& entry:  entries_){
+        target.draw(entry.text_box); 
         target.draw(entry.text);
     }
 }

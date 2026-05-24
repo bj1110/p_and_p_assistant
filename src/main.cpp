@@ -28,8 +28,7 @@ int main(){
 
 
     graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
-    sf::Text txt {"eins", settings->font, 20}; 
-    graphics::SelectionMenuEntry entry {txt, [](const sf::Event& event, std::weak_ptr<graphics::SelectionMenu> self, size_t idx){
+    auto menu_cb = [](const sf::Event& event, std::weak_ptr<graphics::SelectionMenu> self, size_t idx){
         if(event.type == sf::Event::MouseButtonPressed){
             if(event.mouseButton.button == sf::Mouse::Button::Left){
                 auto lock = self.lock();
@@ -41,12 +40,12 @@ int main(){
         else if(event.type ==sf::Event::MouseMoved){
 
         }
-    }}; 
+    }; 
     auto selectionmenu = std::make_shared<graphics::SelectionMenu>(
         settings,
-        std::vector<graphics::SelectionMenuEntry>{entry},
+        std::vector<graphics::SelectionMenuItem>{{"eins", menu_cb}, {"zwei", menu_cb}},
         sf::Vector2f{100.f, 100.f},
-        2.f* txt.getLocalBounds().getSize(),
+        sf::Vector2f{50.f, 20.f},
         sf::Vector2f{10.f, 5.f}
     );
 

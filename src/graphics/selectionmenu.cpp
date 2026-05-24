@@ -21,8 +21,20 @@ SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std
 }
 
 void SelectionMenu::handleEvent(const sf::Event& event){
+    sf::Vector2f mouse_pos;
+    switch (event.type){
+        case sf::Event::MouseMoved:
+            mouse_pos = {static_cast<float>(event.mouseMove.x), 
+                        static_cast<float>(event.mouseMove.y)};
+            break;
+        case sf::Event::MouseButtonPressed:
+        case sf::Event::MouseButtonReleased:
+            mouse_pos = {static_cast<float>(event.mouseButton.x),
+                        static_cast<float>(event.mouseButton.y)};
+            break;
+        default: return; 
+    } 
     for(size_t i=0; i<entries_.size(); ++i){
-        sf::Vector2f mouse_pos {event.mouseButton.x, event.mouseButton.y};
         if(entries_.at(i).text.getGlobalBounds().contains(mouse_pos)){
             entries_.at(i).callback(event, this->shared_from_this(), i);
         }

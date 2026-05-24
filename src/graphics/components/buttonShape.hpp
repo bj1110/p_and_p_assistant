@@ -14,11 +14,12 @@ public:
 
     void setRectangleSize(sf::Vector2f size);
 
-
+    void setCornerSharpeness(float sharpeness);
 
 private:
 
-sf::Vector2f rectangle_size_ ;
+sf::Vector2f rectangle_size_ {};
+float corner_sharpeness_ {10.f};
 
 
 };

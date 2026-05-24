@@ -28,6 +28,8 @@ public:
 
     const sf::Vector2f getSize()const;
 
+    void setShapesCornerSharpeness(float sharpeness);
+
 protected:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 bool isMouseOnButton(const float x, const float y) const; 

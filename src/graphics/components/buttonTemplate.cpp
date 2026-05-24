@@ -107,4 +107,8 @@ void ButtonTemplate::placeText(){
     });
 }
 
+void ButtonTemplate::setShapesCornerSharpeness(float sharpeness){
+    shape_.setCornerSharpeness(sharpeness);
+}
+
 } //namespace graphics

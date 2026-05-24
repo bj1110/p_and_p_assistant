@@ -51,7 +51,11 @@ void SelectionMenu::highlightSelection(size_t idx){
     }
     sf::RectangleShape& textbox = entries_.at(idx).text_box;
     textbox.setOutlineColor(sf::Color::Red);
-    textbox.setOutlineThickness(-4.f);
+    if(textbox.getOutlineThickness() == 0.f){
+        textbox.setOutlineThickness(-4.f);
+    }else{
+        textbox.setOutlineThickness(0.f);
+    }
 }
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{

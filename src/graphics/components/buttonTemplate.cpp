@@ -115,4 +115,8 @@ sf::Color ButtonTemplate::getButtonColor()const{
     return shape_.getFillColor(); 
 }
 
+std::string ButtonTemplate::getString() const{
+    return text_.getString();
+}
+
 } //namespace graphics

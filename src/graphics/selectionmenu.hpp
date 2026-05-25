@@ -28,19 +28,22 @@ void handleEvent(const sf::Event& event);
 
 void highlightSelection(size_t idx);
 
-ButtonTemplate::ButtonCallback createLambda(); 
 
 private:
 
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+ButtonTemplate::ButtonCallback createSelectionLambda(); 
+void expandOptions();
 
 private:
 std::shared_ptr<core::Settings> settings_ = nullptr; 
 std::vector<std::unique_ptr<FixedSizeButton>> buttons_ {}; 
+std::unique_ptr<FixedSizeButton> expand_button_ {}; 
 sf::Vector2f position_ {}; 
 sf::Vector2f size_per_element_ {};
 sf::Vector2f margin_ {}; 
 ButtonTemplate* selected_ {};
+bool options_hidden_ = true; 
 };
 } // namespace graphics

@@ -32,6 +32,7 @@ public:
     void setShapesCornerSharpeness(float sharpeness);
 
     sf::Color getButtonColor()const;
+    std::string getString()const; 
 
 protected:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 

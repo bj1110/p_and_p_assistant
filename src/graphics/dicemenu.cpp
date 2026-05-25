@@ -58,10 +58,13 @@ void DiceMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 void DiceMenu::handleEvent(const sf::Event& event){
+    expandButton_->handleEvent(event); 
+    if(hide_menu_){
+        return;
+    }
     for(const auto& btn: buttons_){
         btn->handleEvent(event); 
     }
-    expandButton_->handleEvent(event); 
 }
 
 

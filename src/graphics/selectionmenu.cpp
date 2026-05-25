@@ -9,11 +9,16 @@ SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std
 :settings_(settings), position_(position), size_per_element_(size_per_element), margin_(margin){
     LOG_INFO("Initilizing Selection Menu"); 
     int elem_num=0;
-    expand_button_ = std::make_unique<FixedSizeButton> (settings_->font, std::string{"select"}, position, size_per_element_, [this](ButtonTemplate&){expandOptions();});
-    expand_button_->setShapesCornerSharpeness(300.f);
-    expand_button_->setButtonColor(sf::Color::White); 
-    expand_button_->setTextColor(sf::Color::Black); 
-    selected_ = expand_button_.get(); 
+    base_button_ = std::make_unique<FixedSizeButton> (settings_->font, std::string{"select"}, position, size_per_element_, [this](ButtonTemplate&){expandOptions();});
+    base_button_->setShapesCornerSharpeness(300.f);
+    base_button_->setButtonColor(sf::Color::White); 
+    base_button_->setTextColor(sf::Color::Black); 
+    selected_ = base_button_.get(); 
+    sf::Vector2f exp_btn_pos = {position.x + size_per_element.x, position.y};
+    sf::Vector2f exp_btn_size = {size_per_element_.y, size_per_element_.y}; 
+    expand_button_ = std::make_unique<FixedSizeButton> (settings_->font, std::string{"v"}, exp_btn_pos , exp_btn_size, [this](ButtonTemplate&){expandOptions();});
+    expand_button_->setButtonColor(sf::Color::White);
+    expand_button_->setTextColor(sf::Color::Black);
     for(auto& item:items){
         sf::Vector2f elem_pos = {position};
         elem_pos.y += (static_cast<float>(++elem_num)* (size_per_element.y + 2.f*margin_.y) ); 
@@ -42,7 +47,8 @@ void SelectionMenu::handleEvent(const sf::Event& event){
     for(auto& btn: buttons_){
         btn->handleEvent(event); 
     }
-    expand_button_->handleEvent(event); 
+    base_button_->handleEvent(event); 
+    expand_button_->handleEvent(event);
 }
 
 void SelectionMenu::highlightSelection(size_t idx){
@@ -59,6 +65,7 @@ void SelectionMenu::highlightSelection(size_t idx){
 }
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    target.draw(*base_button_);
     target.draw(*expand_button_);
     if(options_hidden_){
         return;  
@@ -75,7 +82,7 @@ ButtonTemplate::ButtonCallback SelectionMenu::createSelectionLambda(){
         }
         btn.setButtonColor(sf::Color::Red);
         selected_ = &btn;
-        expand_button_ ->setString(btn.getString());
+        base_button_ ->setString(btn.getString());
         options_hidden_ = true; 
     };
 }
@@ -83,10 +90,10 @@ ButtonTemplate::ButtonCallback SelectionMenu::createSelectionLambda(){
 void SelectionMenu::expandOptions(){
     options_hidden_ = !options_hidden_;
     if(!options_hidden_){
-        expand_button_->setString("select");
+        base_button_->setString("select");
     }
     else{
-        expand_button_->setString(selected_->getString());
+        base_button_->setString(selected_->getString());
     }
 }
 

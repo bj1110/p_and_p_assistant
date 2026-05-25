@@ -39,6 +39,7 @@ void expandOptions();
 private:
 std::shared_ptr<core::Settings> settings_ = nullptr; 
 std::vector<std::unique_ptr<FixedSizeButton>> buttons_ {}; 
+std::unique_ptr<FixedSizeButton> base_button_ {}; 
 std::unique_ptr<FixedSizeButton> expand_button_ {}; 
 sf::Vector2f position_ {}; 
 sf::Vector2f size_per_element_ {};

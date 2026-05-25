@@ -5,20 +5,18 @@ namespace graphics
 {
 
 
-SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<SelectionMenuItem>& items, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin) 
+SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std::vector<std::string>& items, sf::Vector2f position, sf::Vector2f size_per_element, sf::Vector2f margin) 
 :settings_(settings), position_(position), size_per_element_(size_per_element), margin_(margin){
     LOG_INFO("Initilizing Selection Menu"); 
     int elem_num=0;  
     for(auto& item:items){
-        sf::Text text {item.text,settings->font, 20};
         sf::Vector2f elem_pos = {position};
         elem_pos.y += (static_cast<float>(elem_num)* (size_per_element.y + 2.f*margin_.y) ); 
-        text.setPosition(elem_pos +margin_); 
-        text.setFillColor(sf::Color::Black); 
-        sf::RectangleShape rect {size_per_element_ +2.f*margin_};
-        rect.setPosition(elem_pos);
-        rect.setFillColor(sf::Color::White);
-        entries_.emplace_back(text, item.callback, rect);
+        auto btn = std::make_unique<FixedSizeButton> (settings_->font, item, elem_pos, size_per_element_ , createLambda());
+        btn->setShapesCornerSharpeness(300.f); 
+        btn->setButtonColor(sf::Color::White);
+        btn->setTextColor(sf::Color::Black); 
+        buttons_.emplace_back(std::move(btn));
         elem_num++; 
     }
 }
@@ -37,34 +35,46 @@ void SelectionMenu::handleEvent(const sf::Event& event){
             break;
         default: return; 
     } 
-    for(size_t i=0; i<entries_.size(); ++i){
-        if(entries_.at(i).text_box.getGlobalBounds().contains(mouse_pos)){
-            entries_.at(i).callback(event, this->shared_from_this(), i);
-        }
+    for(auto& btn: buttons_){
+        btn->handleEvent(event); 
     }
 }
 
 void SelectionMenu::highlightSelection(size_t idx){
-    if(idx >= entries_.size()){
+    if(idx >= buttons_.size()){
         LOG_ERROR("Access beyond entriey boundaries");
         return;
     }
-    sf::RectangleShape& textbox = entries_.at(idx).text_box;
-    textbox.setOutlineColor(sf::Color::Red);
-    if(textbox.getOutlineThickness() == 0.f){
-        textbox.setOutlineThickness(-4.f);
+    auto& btn = buttons_.at(idx);
+    if(btn->getButtonColor() == sf::Color::Red){
+        btn->setButtonColor(sf::Color::White);
     }else{
-        textbox.setOutlineThickness(0.f);
+        btn->setButtonColor(sf::Color::Red);
     }
 }
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{
-    for(const SelectionMenuEntry& entry:  entries_){
-        target.draw(entry.text_box); 
-        target.draw(entry.text);
+    for(const auto& button:  buttons_){
+        target.draw(*button); 
     }
 }
 
+ButtonTemplate::ButtonCallback SelectionMenu::createLambda(){
+    return [this](ButtonTemplate& btn){
+        auto fixed = dynamic_cast<FixedSizeButton&>(btn);
+        if(&btn == selected_){
+            btn.setButtonColor(sf::Color::White);
+            selected_ = nullptr;
+        }
+        else{
+            if(selected_){
+                selected_->setButtonColor(sf::Color::White);
+            }
+            btn.setButtonColor(sf::Color::Red);
+            selected_ = &btn;
+        }
+    };
+}
 
 
 

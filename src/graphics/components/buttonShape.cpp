@@ -1,5 +1,6 @@
 #include "buttonShape.hpp"
 #include <cmath>
+#include "utils/logger.hpp"
 
 namespace graphics{
 
@@ -34,6 +35,7 @@ sf::Vector2f ButtonShape::getPoint(size_t index) const{
 
 void ButtonShape::setCornerSharpeness(float sharpeness){
     corner_sharpeness_ = sharpeness;
+    update();
 }
 
 } //namespace graphics

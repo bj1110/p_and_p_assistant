@@ -22,7 +22,7 @@ settings_(settings), gameboard_(gameboard), button_sizes_(btn_size), margin_(mar
         buttons_.emplace_back(std::move(btn)); 
         ++curr_btn_num; 
     }
-    expandButton_ =  std::make_unique<ResizingButton>(settings->font, ">", sf::Vector2f{0.f, settings_->windowsize.y/2.f}, [this]()
+    expandButton_ =  std::make_unique<ResizingButton>(settings->font, ">", sf::Vector2f{0.f, settings_->windowsize.y/2.f}, [this](ButtonTemplate&)
     {   
         hide_menu_=!hide_menu_;
         sf::Vector2f btn_size = expandButton_->getSize();
@@ -30,7 +30,7 @@ settings_(settings), gameboard_(gameboard), button_sizes_(btn_size), margin_(mar
         expandButton_->setPosition(hide_menu_? sf::Vector2f{0.f, settings_->windowsize.y/2.f} : expandedPos); 
         expandButton_->setString(hide_menu_? ">": "<"); 
     }); 
-    auto result_button_ = std::make_unique<FixedSizeButton>(settings->font, "", sf::Vector2f{margin.x, static_cast<float>(curr_btn_num) * (btn_size.y + margin.y) + (margin.y)}, btn_size, [](){}); 
+    auto result_button_ = std::make_unique<FixedSizeButton>(settings->font, "", sf::Vector2f{margin.x, static_cast<float>(curr_btn_num) * (btn_size.y + margin.y) + (margin.y)}, btn_size, [](ButtonTemplate&){}); 
     buttons_.emplace_back(std::move(result_button_));
     background_.setSize({button_sizes_.x + 2.f* margin_.x, settings_->windowsize.y* 1.f});
     background_.setPosition({0.f, 0.f}); 
@@ -39,8 +39,8 @@ settings_(settings), gameboard_(gameboard), button_sizes_(btn_size), margin_(mar
 }
 
 
-std::function<void()> DiceMenu::createButtonLambda(u_int sides) const{
-    return [this, sides](){
+std::function<void(ButtonTemplate&)> DiceMenu::createButtonLambda(u_int sides) const{
+    return [this, sides](ButtonTemplate& btn){
         u_int rnd = gameboard_->roll_dice(sides); 
         buttons_.back()->setString(std::format("your W{} rolled: {}",sides, rnd)); 
     };

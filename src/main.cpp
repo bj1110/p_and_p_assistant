@@ -28,25 +28,13 @@ int main(){
 
 
     graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
-    auto menu_cb = [](const sf::Event& event, std::weak_ptr<graphics::SelectionMenu> self, size_t idx){
-        if(event.type == sf::Event::MouseButtonPressed){
-            if(event.mouseButton.button == sf::Mouse::Button::Left){
-                auto lock = self.lock();
-                if(lock){
-                    lock->highlightSelection(idx); 
-                }
-            }
-        }
-        else if(event.type ==sf::Event::MouseMoved){
 
-        }
-    }; 
     auto selectionmenu = std::make_shared<graphics::SelectionMenu>(
         settings,
-        std::vector<graphics::SelectionMenuItem>{{"eins", menu_cb}, {"zwei", menu_cb}},
-        sf::Vector2f{100.f, 100.f},
-        sf::Vector2f{50.f, 20.f},
-        sf::Vector2f{10.f, 5.f}
+        std::vector{std::string{"eins"}, std::string{"zewi"}, std::string{"hallo drei"}},
+        sf::Vector2f{100.f, 50.f},
+        sf::Vector2f{60.f, 30.f},
+        sf::Vector2f{0.f, 0.f}
     );
 
     while(window.isOpen()){

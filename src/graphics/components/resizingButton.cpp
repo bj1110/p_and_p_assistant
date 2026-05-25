@@ -2,7 +2,7 @@
 
 namespace graphics{
 
-ResizingButton::ResizingButton(const sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback)
+ResizingButton::ResizingButton(const sf::Font& font, const std::string& text, sf::Vector2f pos, ButtonCallback callback)
 : ButtonTemplate::ButtonTemplate(font, text, pos, callback){
     resize(); 
 }

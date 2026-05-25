@@ -31,7 +31,7 @@ public:
 
 
 private: 
-    std::function<void()> createButtonLambda(u_int sides) const; 
+    std::function<void(ButtonTemplate&)> createButtonLambda(u_int sides) const; 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 

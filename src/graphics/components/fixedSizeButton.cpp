@@ -3,7 +3,7 @@
 namespace graphics
 {
     
-FixedSizeButton::FixedSizeButton(const sf::Font& font, const std::string& text, sf::Vector2f pos, sf::Vector2f size, std::function<void()> callback)
+FixedSizeButton::FixedSizeButton(const sf::Font& font, const std::string& text, sf::Vector2f pos, sf::Vector2f size, ButtonCallback callback)
 :ButtonTemplate(font, text, pos, callback), size_(size){
     resize();
 }

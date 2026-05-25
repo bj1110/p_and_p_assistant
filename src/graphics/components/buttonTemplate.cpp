@@ -4,7 +4,7 @@
 namespace graphics{
 
 
-ButtonTemplate::ButtonTemplate(const sf::Font& font, const std::string& text, sf::Vector2f pos, std::function<void()> callback ):
+ButtonTemplate::ButtonTemplate(const sf::Font& font, const std::string& text, sf::Vector2f pos, ButtonCallback callback ):
 callback_(callback)
 {
     text_.setFont(font); 
@@ -15,7 +15,7 @@ callback_(callback)
     setPosition(pos); 
 }
 
-void ButtonTemplate::setCallback(std::function<void()> callback){
+void ButtonTemplate::setCallback(ButtonCallback callback){
     callback_= callback; 
 }
 
@@ -45,13 +45,13 @@ void ButtonTemplate::setTextColor(sf::Color color){
 }
 
 
-void ButtonTemplate::handleMouseClick(const sf::Event::MouseButtonEvent& event) const{
+void ButtonTemplate::handleMouseClick(const sf::Event::MouseButtonEvent& event){
     if(event.button != sf::Mouse::Button::Left){
         return;
     }
     if(isMouseOnButton(event.x, event.y)){
         LOG_DEBUG("Mouse clicked on Button");
-        callback_(); 
+        callback_(*this); 
     }
 }
 
@@ -109,6 +109,10 @@ void ButtonTemplate::placeText(){
 
 void ButtonTemplate::setShapesCornerSharpeness(float sharpeness){
     shape_.setCornerSharpeness(sharpeness);
+}
+
+sf::Color ButtonTemplate::getButtonColor()const{
+    return shape_.getFillColor(); 
 }
 
 } //namespace graphics

@@ -5,13 +5,14 @@
 #include <mechanics/dice.hpp>
 #include <core/gameboard.hpp>
 #include <core/settings.hpp>
+#include "graphics/GUI_element.hpp"
 
 namespace graphics
 {
 /**
  * Class for left Menu to hide Dice-Buttons
  */
-class DiceMenu : public sf::Drawable{
+class DiceMenu : public graphics::GUI_element{
 public:
 
     /**

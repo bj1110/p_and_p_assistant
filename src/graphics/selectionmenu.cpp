@@ -31,6 +31,9 @@ SelectionMenu::SelectionMenu(std::shared_ptr<core::Settings> settings, const std
 }
 
 void SelectionMenu::handleEvent(const sf::Event& event){
+    if(!isFocussed()){
+        return;
+    }
     bool hide_after = false;
     if(!options_hidden_){
         hide_after=true;

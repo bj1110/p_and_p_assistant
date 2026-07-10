@@ -8,6 +8,8 @@
 #include "graphics/dicemenu.hpp"
 #include "core/settings.hpp"
 #include "graphics/selectionmenu.hpp"
+#include "graphics/GUI_element.hpp"
+#include "graphics/GUI_manager.hpp"
 
 int main(){
     std::shared_ptr<core::Settings> settings = std::make_shared<core::Settings>(sf::Vector2u{800, 600});
@@ -26,9 +28,16 @@ int main(){
     auto player1 = std::make_unique<entities::Warrior>("Pete"); 
     gameboard->add_character(std::move(player1)); 
 
+    std::shared_ptr<graphics::GUI_manager> gui_manager = std::make_shared<graphics::GUI_manager>();
 
-    graphics::DiceMenu dicemenu {settings, gameboard, {150.f, 50.f}, {10.f, 10.f}}; 
+    std::shared_ptr<graphics::GUI_element> dicemenu = std::make_shared<graphics::DiceMenu>( 
+        settings, 
+        gameboard, 
+        sf::Vector2f{150.f, 50.f}, 
+        sf::Vector2f{10.f, 10.f}
+    );
 
+    gui_manager->addElement(dicemenu);
     auto selectionmenu = std::make_shared<graphics::SelectionMenu>(
         settings,
         std::vector{std::string{"eins"}, std::string{"zewi"}, std::string{"hallo drei"}},
@@ -36,6 +45,9 @@ int main(){
         sf::Vector2f{60.f, 30.f},
         sf::Vector2f{0.f, 0.f}
     );
+    gui_manager->addElement(selectionmenu);
+    gui_manager->focusAll();
+
 
     while(window.isOpen()){
         sf::Event event;
@@ -43,12 +55,10 @@ int main(){
             if(event.type==sf::Event::Closed){
                 window.close();
             }
-            dicemenu.handleEvent(event); 
-            selectionmenu->handleEvent(event); 
+            gui_manager->handleEvent(event);
         }
         window.clear(sf::Color::Black);
-        window.draw(dicemenu); 
-        window.draw(*selectionmenu);
+        gui_manager->draw(window);
         window.display(); 
     }
 

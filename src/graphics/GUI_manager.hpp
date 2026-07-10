@@ -1,0 +1,36 @@
+#pragma once
+#include <vector>
+#include <memory>
+#include "graphics/GUI_element.hpp"
+#include <SFML/Graphics.hpp>
+
+
+
+namespace graphics{
+
+
+class GUI_manager: public std::enable_shared_from_this<GUI_manager>{
+
+public:
+    GUI_manager() = default;
+
+    void handleEvent(const sf::Event& event);
+    void draw(sf::RenderWindow& window) const ; 
+    void focusElement(const GUI_element* element);
+    void focusAll();
+
+
+    bool addElement(std::shared_ptr<GUI_element> element);
+
+
+
+private:
+    std::vector<std::shared_ptr<GUI_element>> gui_elements {};
+
+
+};
+
+
+
+    
+} // namespace graphics

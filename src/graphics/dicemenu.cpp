@@ -1,4 +1,5 @@
 #include "dicemenu.hpp"
+#include "graphics/GUI_manager.hpp"
 
 namespace graphics{
 
@@ -29,6 +30,16 @@ settings_(settings), gameboard_(gameboard), button_sizes_(btn_size), margin_(mar
         sf::Vector2f expandedPos {button_sizes_.x + 2.f* margin_.x, settings_->windowsize.y/2.f}; 
         expandButton_->setPosition(hide_menu_? sf::Vector2f{0.f, settings_->windowsize.y/2.f} : expandedPos); 
         expandButton_->setString(hide_menu_? ">": "<"); 
+        if(!hide_menu_){
+            if(auto tmp = manager.lock()){
+                tmp->focusElement(this);
+            }
+        }
+        else{
+            if(auto tmp = manager.lock()){
+                tmp->focusAll();
+            }
+        }
     }); 
     auto result_button_ = std::make_unique<FixedSizeButton>(settings->font, "", sf::Vector2f{margin.x, static_cast<float>(curr_btn_num) * (btn_size.y + margin.y) + (margin.y)}, btn_size, [](ButtonTemplate&){}); 
     buttons_.emplace_back(std::move(result_button_));

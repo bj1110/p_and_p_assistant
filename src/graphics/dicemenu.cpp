@@ -69,6 +69,9 @@ void DiceMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const {
 }
 
 void DiceMenu::handleEvent(const sf::Event& event){
+    if(!isFocussed()){
+        return;
+    }
     expandButton_->handleEvent(event); 
     if(hide_menu_){
         return;

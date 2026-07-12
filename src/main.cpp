@@ -1,5 +1,4 @@
 #include <iostream>
-#include "entities/warrior.hpp"
 #include "mechanics/dice.hpp"
 #include "utils/logger.hpp"
 #include <sstream>
@@ -25,8 +24,10 @@ int main(){
     std::shared_ptr<core::Gameboard> gameboard = std::make_shared<core::Gameboard>();
     gameboard->init(2, {2, 8, 10, 20, 100});
 
-    auto player1 = std::make_unique<entities::Warrior>("Pete"); 
+    auto player1 = std::make_shared<entities::Character>("Pete"); 
     gameboard->add_character(std::move(player1)); 
+
+    gameboard->getCharater("Pete")->addStat({"HP", 100, 10});
 
     std::shared_ptr<graphics::GUI_manager> gui_manager = std::make_shared<graphics::GUI_manager>();
 

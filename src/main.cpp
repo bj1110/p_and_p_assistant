@@ -9,6 +9,7 @@
 #include "graphics/selectionmenu.hpp"
 #include "graphics/GUI_element.hpp"
 #include "graphics/GUI_manager.hpp"
+#include "graphics/inputPopUp.hpp"
 
 int main(){
     std::shared_ptr<core::Settings> settings = std::make_shared<core::Settings>(sf::Vector2u{800, 600});
@@ -47,6 +48,15 @@ int main(){
         sf::Vector2f{0.f, 0.f}
     );
     gui_manager->addElement(selectionmenu);
+
+    std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
+        settings, 
+        sf::Vector2f{300.f, 500.f},
+        "Create Player",
+        std::vector{std::string{"Name"}}
+    );
+    gui_manager->addElement(inputPopUp);
+
     gui_manager->focusAll();
 
 

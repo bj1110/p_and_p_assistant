@@ -15,13 +15,12 @@ target_include_directories(p_and_p_assistant
 add_subdirectory(src/utils)
 add_subdirectory(src/core)
 add_subdirectory(src/graphics)
+add_subdirectory(src/mechanics)
+add_subdirectory(src/entities)
 
 target_sources(${PROJECT_NAME}
     PRIVATE
         src/main.cpp
-        src/entities/character.cpp
-        src/entities/warrior.cpp
-        src/mechanics/dice.cpp
 )
 
 target_link_libraries(p_and_p_assistant sfml-graphics sfml-window sfml-system)

@@ -27,6 +27,30 @@ bool GUI_manager::addElement(std::shared_ptr<GUI_element> element){
     return true;
 }
 
+bool GUI_manager::removeElement(GUI_element* element){
+    if(element==nullptr){
+        return false;
+    }
+    m_deletion.push_back(element); 
+    return true; 
+}
+
+void GUI_manager::update(){
+    if(!m_deletion.empty()){
+        for(GUI_element* el: m_deletion){
+            for(auto it= gui_elements.begin(); it != gui_elements.end(); ){
+                if(it->get() == el){
+                    it= gui_elements.erase(it);
+                }
+                else{
+                    ++it;
+                }
+            }
+        }
+    }
+    focusAll(); 
+}
+
 void GUI_manager::focusElement(const GUI_element* element){
     if(element==nullptr){
         focusAll();

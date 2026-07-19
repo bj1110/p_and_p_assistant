@@ -32,14 +32,27 @@ m_settings(settings), m_fields(std::move(fields))
         windowCenter.x,
         windowCenter.y - size.y / 2.f + 15.f
     );
+    sf::Vector2f cb_pos {
+        windowCenter.x +  size.x / 2.7f ,
+        windowCenter.y - size.y/ 2.1f  
+        };
+    m_closeButton = std::make_unique<ResizingButton> (settings->font,"X", cb_pos, [this](ButtonTemplate&){this->close();} );
+    m_closeButton->setButtonColor(sf::Color{100, 100, 100, 70});
 }
 
+void InputPopUp::close(){
+    if(auto tmp= manager.lock()){
+        if (!tmp ->removeElement(this)){
+            LOG_ERROR("Couldn't close");
+        }
+    }
+}
 
 void InputPopUp::handleEvent(const sf::Event& event){
     if(event.type == sf::Event::TextEntered){
         LOG_INFO("input popup event handler called"); 
-
     }
+    m_closeButton->handleEvent(event);
 }
 
 void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
@@ -48,6 +61,7 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     }
     target.draw(m_shape);
     target.draw(m_title);
+    target.draw(*m_closeButton);
 }
 
 } // namespace graphics

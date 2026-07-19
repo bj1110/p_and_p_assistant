@@ -6,6 +6,7 @@
 #include "GUI_element.hpp"
 #include "core/settings.hpp"
 #include "utils/logger.hpp"
+#include "components/resizingButton.hpp"
 
 
 
@@ -16,10 +17,12 @@ class InputPopUp : public GUI_element{
 public: 
     InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, std::vector<std::string> fields);
 
+    ~InputPopUp() = default;
 
     void handleEvent(const sf::Event& event) override;
 
 
+    void close();
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 
@@ -28,6 +31,7 @@ private:
     ButtonShape m_shape {};
     sf::Text m_title {}; 
     std::vector<std::string> m_fields {};
+    std::unique_ptr<ResizingButton> m_closeButton {}; 
 
 };
 

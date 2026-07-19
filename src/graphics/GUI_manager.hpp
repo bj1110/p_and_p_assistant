@@ -20,12 +20,15 @@ public:
     void focusAll();
 
 
-    bool addElement(std::shared_ptr<GUI_element> element);
+    [[nodiscard]] bool addElement(std::shared_ptr<GUI_element> element);
+    [[nodiscard]] bool removeElement(GUI_element* element);
 
+    void update();
 
 
 private:
     std::vector<std::shared_ptr<GUI_element>> gui_elements {};
+    std::vector<GUI_element*> m_deletion {};
 
 
 };

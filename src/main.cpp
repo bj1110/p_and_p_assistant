@@ -39,7 +39,9 @@ int main(){
         sf::Vector2f{10.f, 10.f}
     );
 
-    gui_manager->addElement(dicemenu);
+    if(!gui_manager->addElement(dicemenu)){
+        LOG_WARN("Element was not added "); 
+    }
     auto selectionmenu = std::make_shared<graphics::SelectionMenu>(
         settings,
         std::vector{std::string{"eins"}, std::string{"zewi"}, std::string{"hallo drei"}},
@@ -47,7 +49,9 @@ int main(){
         sf::Vector2f{60.f, 30.f},
         sf::Vector2f{0.f, 0.f}
     );
-    gui_manager->addElement(selectionmenu);
+    if(!gui_manager->addElement(selectionmenu)){
+        LOG_WARN("Element was not added "); 
+    }
 
     std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
         settings, 
@@ -55,13 +59,16 @@ int main(){
         "Create Player",
         std::vector{std::string{"Name"}}
     );
-    gui_manager->addElement(inputPopUp);
+    if(!gui_manager->addElement(inputPopUp)){
+        LOG_WARN("Element was not added "); 
+    }
 
     gui_manager->focusAll();
 
 
     while(window.isOpen()){
         sf::Event event;
+        gui_manager->update(); 
         while(window.pollEvent(event)){
             if(event.type==sf::Event::Closed){
                 window.close();

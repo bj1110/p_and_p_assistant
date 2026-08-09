@@ -4,4 +4,5 @@ target_sources(
     PRIVATE buttonTemplate.cpp
     PRIVATE resizingButton.cpp
     PRIVATE fixedSizeButton.cpp
+    components.hpp
 )

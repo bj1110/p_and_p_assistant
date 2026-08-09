@@ -4,10 +4,11 @@
 namespace graphics{
 
 
-InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, std::vector<std::string> fields):
-m_settings(settings), m_fields(std::move(fields))
+InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<std::string>& fields):
+m_settings(settings)
 {
     m_shape.setRectangleSize(size);
+    m_shape.setCornerSharpeness(50.f);
     m_title.setFont(settings->font);
     m_title.setString(title);
     m_title.setStyle(sf::Text::Bold);
@@ -38,6 +39,50 @@ m_settings(settings), m_fields(std::move(fields))
         };
     m_closeButton = std::make_unique<ResizingButton> (settings->font,"X", cb_pos, [this](ButtonTemplate&){this->close();} );
     m_closeButton->setButtonColor(sf::Color{100, 100, 100, 70});
+    sf::Vector2f fieldSize{
+        size.x - 40.f,
+        30.f
+    };
+
+    const float spacing = 15.f;
+    const float labelSpacing = 5.f;
+
+    float y = windowCenter.y - size.y / 2.f + 60.f;
+
+    for (const std::string& str : fields)
+    {
+        sf::Vector2f fieldPosition{
+            windowCenter.x - fieldSize.x / 2.f,
+            y
+        };
+
+        Textfield f{
+            fieldSize,
+            fieldPosition,
+            m_settings
+        };
+
+        sf::Text t{
+            sf::String{str},
+            m_settings->font
+        };
+
+        t.setCharacterSize(10);
+        t.setFillColor(sf::Color::Black);
+
+        auto bounds = t.getLocalBounds();
+
+        t.setPosition(
+            fieldPosition.x,
+            fieldPosition.y - bounds.height - labelSpacing
+        );
+
+        m_fields.emplace_back(t, f);
+
+        y += fieldSize.y + bounds.height + spacing + labelSpacing;
+    }
+
+    
 }
 
 void InputPopUp::close(){
@@ -49,10 +94,10 @@ void InputPopUp::close(){
 }
 
 void InputPopUp::handleEvent(const sf::Event& event){
-    if(event.type == sf::Event::TextEntered){
-        LOG_INFO("input popup event handler called"); 
-    }
     m_closeButton->handleEvent(event);
+    for(auto& field:m_fields){
+        field.second.handleEvent(event);
+    }
 }
 
 void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
@@ -62,6 +107,10 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(m_shape);
     target.draw(m_title);
     target.draw(*m_closeButton);
+    for(const auto& field: m_fields){
+        target.draw(field.first);
+        target.draw(field.second);
+    }
 }
 
 } // namespace graphics

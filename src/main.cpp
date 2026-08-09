@@ -57,7 +57,7 @@ int main(){
         settings, 
         sf::Vector2f{300.f, 500.f},
         "Create Player",
-        std::vector{std::string{"Name"}}
+        std::vector{std::string{"Name"}, std::string{"Spitzname"}}
     );
     if(!gui_manager->addElement(inputPopUp)){
         LOG_WARN("Element was not added "); 

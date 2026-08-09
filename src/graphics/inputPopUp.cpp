@@ -33,19 +33,30 @@ m_settings(settings)
         windowCenter.x,
         windowCenter.y - size.y / 2.f + 15.f
     );
+
+    const float spacing = 15.f;
+    const float labelSpacing = 5.f;
     sf::Vector2f cb_pos {
         windowCenter.x +  size.x / 2.7f ,
         windowCenter.y - size.y/ 2.1f  
         };
     m_closeButton = std::make_unique<ResizingButton> (settings->font,"X", cb_pos, [this](ButtonTemplate&){this->close();} );
     m_closeButton->setButtonColor(sf::Color{100, 100, 100, 70});
+
+    sf::Vector2f sb_pos {
+        cb_pos.x -3*spacing ,
+        windowCenter.y + size.y/ 2.f - 3*spacing 
+    };
+
+    m_submit = std::make_unique<ResizingButton>(settings->font, "Submit", sb_pos, [this](ButtonTemplate&){LOG_INFO("Submitted");});
+    m_submit->setButtonColor(sf::Color{100, 100, 100, 70});
+
     sf::Vector2f fieldSize{
         size.x - 40.f,
         30.f
     };
 
-    const float spacing = 15.f;
-    const float labelSpacing = 5.f;
+
 
     float y = windowCenter.y - size.y / 2.f + 60.f;
 
@@ -98,6 +109,7 @@ void InputPopUp::handleEvent(const sf::Event& event){
     for(auto& field:m_fields){
         field.second.handleEvent(event);
     }
+    m_submit->handleEvent(event);
 }
 
 void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
@@ -111,6 +123,7 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
         target.draw(field.first);
         target.draw(field.second);
     }
+    target.draw(*m_submit);
 }
 
 } // namespace graphics

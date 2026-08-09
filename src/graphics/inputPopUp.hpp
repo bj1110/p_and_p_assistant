@@ -33,6 +33,7 @@ private:
     sf::Text m_title {}; 
     std::vector<std::pair<sf::Text, Textfield>> m_fields {};
     std::unique_ptr<ResizingButton> m_closeButton {}; 
+    std::unique_ptr<ResizingButton> m_submit{};
 
 };
 

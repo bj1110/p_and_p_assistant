@@ -60,6 +60,10 @@ public:
         }
     }
 
+    sf::String getString()const{
+        return m_text.getString();
+    }
+
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
         target.draw(m_shape);

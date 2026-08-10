@@ -5,6 +5,8 @@
 #include "utils/logger.hpp"
 #include "buttonShape.hpp"
 #include "core/settings.hpp"
+#include <variant>
+#include <string>
 
 namespace graphics
 {
@@ -13,8 +15,11 @@ namespace graphics
 class Textfield : public GUI_element{
 
 public:
-    Textfield(sf::Vector2f size, sf::Vector2f position, std::shared_ptr<core::Settings> settings)
-    : m_shape(size), m_settings(settings){
+enum class Type {String, Int};
+
+public:
+    Textfield(sf::Vector2f size, sf::Vector2f position, std::shared_ptr<core::Settings> settings, Type type = Type::String)
+    : m_shape(size), m_settings(settings), m_type(type){
         m_shape.setPosition(position);
         m_text.setFont(m_settings->font);
         m_text.setFillColor(sf::Color::Black);
@@ -47,8 +52,11 @@ public:
         }
         if(event.type == sf::Event::TextEntered){
             sf::Uint32 code = event.text.unicode;
-            if(code>=32){
-                m_text.setString(m_text.getString()+ event.text.unicode);
+            if(m_type== Type::String && code>=32){
+                m_text.setString(m_text.getString()+ code);
+            }
+            else if(m_type== Type::Int && code>='0' && code <='9'){
+                m_text.setString(m_text.getString() + code);
             }
         }
         if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Backspace){
@@ -62,6 +70,17 @@ public:
 
     sf::String getString()const{
         return m_text.getString();
+    }
+
+    std::variant<std::string, int> getValue()const{
+        sf::String str = getString();
+        if(m_type== Type::String){
+            return str;
+        }
+        if(str.isEmpty()){
+            return -1;
+        }
+        return std::stoi(str.toAnsiString());
     }
 
 private:
@@ -79,6 +98,7 @@ ButtonShape m_shape{};
 sf::Text m_text {};
 std::shared_ptr<core::Settings> m_settings{};
 bool isSelected = false;
+Type m_type = Type::String;
 
 
 };

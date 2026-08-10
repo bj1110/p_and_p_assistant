@@ -55,7 +55,11 @@ int main(){
         LOG_WARN("Element was not added "); 
     }
 
-    std::vector<std::string> fields {std::string{"Name"}, std::string{"Spitzname"}};
+    std::vector<graphics::InputPopUp::InputType> fields {
+        {std::string{"Name"}, graphics::Textfield::Type::String}, 
+        {std::string{"Spitzname"},graphics::Textfield::Type::String},
+        {std::string{"Alter"}, graphics::Textfield::Type::Int}
+    };
     std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
         settings, 
         sf::Vector2f{300.f, 500.f},
@@ -63,7 +67,14 @@ int main(){
         fields,
         [&fields](const graphics::InputResult& result){
             for(const auto& field: fields){
-                LOG_INFO(std::format("{}: {}", field, result.at(field)));
+                if (field.type == graphics::Textfield::Type::String)
+                {
+                    LOG_INFO(std::get<std::string>(result.at(field.fieldname)));
+                }
+                else if (field.type == graphics::Textfield::Type::Int)
+                {
+                    LOG_INFO(std::to_string(std::get<int>(result.at(field.fieldname))));
+                }
             }
         }
     );

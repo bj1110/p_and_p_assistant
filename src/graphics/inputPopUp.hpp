@@ -13,14 +13,21 @@
 
 namespace graphics{
 
-using InputResult = std::unordered_map<std::string, std::string>;
+using InputResult = std::unordered_map<std::string, std::variant<std::string, int>>;
 
 using SubmitCallback = std::function<void(const InputResult&)>;
 
 class InputPopUp : public GUI_element{
 
 public: 
-    InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<std::string>& fields, SubmitCallback on_submit);
+
+    struct InputType{
+        std::string fieldname;
+        Textfield::Type type;
+    };
+
+
+    InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<InputType>& fields, SubmitCallback on_submit);
 
     ~InputPopUp() = default;
 
@@ -33,11 +40,17 @@ private:
 
     void submit();
 
+    struct Field {
+        sf::Text fieldname;
+        Textfield field;
+        Textfield::Type type;
+    };
+
 private:
     std::shared_ptr<core::Settings> m_settings = nullptr; 
     ButtonShape m_shape {};
     sf::Text m_title {}; 
-    std::vector<std::pair<sf::Text, Textfield>> m_fields {};
+    std::vector<Field> m_fields {};
     std::unique_ptr<ResizingButton> m_closeButton {}; 
     std::unique_ptr<ResizingButton> m_submit{};
 

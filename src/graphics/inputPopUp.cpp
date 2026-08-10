@@ -4,7 +4,7 @@
 namespace graphics{
 
 
-InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<std::string>& fields, SubmitCallback on_submit):
+InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<InputType>& fields, SubmitCallback on_submit):
 m_settings(settings), m_onsubmit(on_submit)
 {
     m_shape.setRectangleSize(size);
@@ -60,7 +60,7 @@ m_settings(settings), m_onsubmit(on_submit)
 
     float y = windowCenter.y - size.y / 2.f + 60.f;
 
-    for (const std::string& str : fields)
+    for (const InputType& field : fields)
     {
         sf::Vector2f fieldPosition{
             windowCenter.x - fieldSize.x / 2.f,
@@ -70,11 +70,12 @@ m_settings(settings), m_onsubmit(on_submit)
         Textfield f{
             fieldSize,
             fieldPosition,
-            m_settings
+            m_settings,
+            field.type
         };
 
         sf::Text t{
-            sf::String{str},
+            sf::String{field.fieldname},
             m_settings->font
         };
 
@@ -107,7 +108,7 @@ void InputPopUp::close(){
 void InputPopUp::handleEvent(const sf::Event& event){
     m_closeButton->handleEvent(event);
     for(auto& field:m_fields){
-        field.second.handleEvent(event);
+        field.field.handleEvent(event);
     }
     m_submit->handleEvent(event);
 }
@@ -120,8 +121,8 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     target.draw(m_title);
     target.draw(*m_closeButton);
     for(const auto& field: m_fields){
-        target.draw(field.first);
-        target.draw(field.second);
+        target.draw(field.fieldname);
+        target.draw(field.field);
     }
     target.draw(*m_submit);
 }
@@ -129,8 +130,8 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
 
 void InputPopUp::submit(){
     InputResult result;
-    for(const auto& [name, field]: m_fields){
-        result[name.getString()] = field.getString();
+    for(const auto& [name, field, type]: m_fields){
+        result[name.getString()] = field.getValue();
     }
     if(m_onsubmit){
         m_onsubmit(result);

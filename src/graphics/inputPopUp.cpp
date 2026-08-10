@@ -4,8 +4,8 @@
 namespace graphics{
 
 
-InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<std::string>& fields):
-m_settings(settings)
+InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<std::string>& fields, SubmitCallback on_submit):
+m_settings(settings), m_onsubmit(on_submit)
 {
     m_shape.setRectangleSize(size);
     m_shape.setCornerSharpeness(50.f);
@@ -48,7 +48,7 @@ m_settings(settings)
         windowCenter.y + size.y/ 2.f - 3*spacing 
     };
 
-    m_submit = std::make_unique<ResizingButton>(settings->font, "Submit", sb_pos, [this](ButtonTemplate&){LOG_INFO("Submitted");});
+    m_submit = std::make_unique<ResizingButton>(settings->font, "Submit", sb_pos, [this](ButtonTemplate&){submit();});
     m_submit->setButtonColor(sf::Color{100, 100, 100, 70});
 
     sf::Vector2f fieldSize{
@@ -124,6 +124,20 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
         target.draw(field.second);
     }
     target.draw(*m_submit);
+}
+
+
+void InputPopUp::submit(){
+    InputResult result;
+    for(const auto& [name, field]: m_fields){
+        result[name.getString()] = field.getString();
+    }
+    if(m_onsubmit){
+        m_onsubmit(result);
+    } else{
+        LOG_ERROR("No submit callback supplied. Data from this input field is lost.");
+    }
+    close();
 }
 
 } // namespace graphics

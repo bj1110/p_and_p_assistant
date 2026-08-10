@@ -26,7 +26,9 @@ int main(){
     gameboard->init(2, {2, 8, 10, 20, 100});
 
     auto player1 = std::make_shared<entities::Character>("Pete"); 
-    gameboard->add_character(std::move(player1)); 
+    if(!gameboard->add_character(std::move(player1))){
+        LOG_WARN("Failed to add character");
+    } 
 
     gameboard->getCharater("Pete")->addStat({"HP", 100, 10});
 
@@ -53,11 +55,17 @@ int main(){
         LOG_WARN("Element was not added "); 
     }
 
+    std::vector<std::string> fields {std::string{"Name"}, std::string{"Spitzname"}};
     std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
         settings, 
         sf::Vector2f{300.f, 500.f},
         "Create Player",
-        std::vector{std::string{"Name"}, std::string{"Spitzname"}}
+        fields,
+        [&fields](const graphics::InputResult& result){
+            for(const auto& field: fields){
+                LOG_INFO(std::format("{}: {}", field, result.at(field)));
+            }
+        }
     );
     if(!gui_manager->addElement(inputPopUp)){
         LOG_WARN("Element was not added "); 

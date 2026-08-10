@@ -18,7 +18,7 @@ public:
     int roll_dice(u_int sides);
     const std::unordered_map<u_int, mechanics::Dice> getAllDice() const;
 
-    bool add_character(std::shared_ptr<entities::Character> character); 
+    [[nodiscard]] bool add_character(std::shared_ptr<entities::Character> character); 
 
     std::shared_ptr<entities::Character> getCharater(const std::string& name);
 

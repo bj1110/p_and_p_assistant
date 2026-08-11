@@ -7,7 +7,7 @@ namespace graphics
 
 class GUI_manager;
 
-class GUI_element: public sf::Drawable{
+class GUI_element: public sf::Drawable, public sf::Transformable{
 public:
     virtual  void handleEvent(const sf::Event& event) =0;
     virtual ~GUI_element() = default;

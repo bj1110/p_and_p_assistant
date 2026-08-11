@@ -58,6 +58,7 @@ std::function<void(ButtonTemplate&)> DiceMenu::createButtonLambda(u_int sides) c
 }
 
 void DiceMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const {
+    states.transform *= getTransform();
     target.draw(*expandButton_);
     if(hide_menu_){
         return;

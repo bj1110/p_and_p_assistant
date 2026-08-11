@@ -7,6 +7,8 @@ namespace graphics{
 InputPopUp::InputPopUp(std::shared_ptr<core::Settings> settings, sf::Vector2f size, std::string title, const std::vector<InputType>& fields, SubmitCallback on_submit):
 m_settings(settings), m_onsubmit(on_submit)
 {
+    constexpr float padding = 15.f; 
+
     m_shape.setRectangleSize(size);
     m_shape.setCornerSharpeness(50.f);
     m_title.setFont(settings->font);
@@ -31,11 +33,12 @@ m_settings(settings), m_onsubmit(on_submit)
 
     m_title.setPosition(
         windowCenter.x,
-        windowCenter.y - size.y / 2.f + 15.f
+        windowCenter.y - size.y / 2.f + padding
     );
 
     const float spacing = 15.f;
     const float labelSpacing = 5.f;
+
     sf::Vector2f cb_pos {
         windowCenter.x +  size.x / 2.7f ,
         windowCenter.y - size.y/ 2.1f  
@@ -114,6 +117,7 @@ void InputPopUp::handleEvent(const sf::Event& event){
 }
 
 void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    states.transform *= getTransform();
     if(auto tmp = manager.lock()){
         tmp->focusElement(this);
     }

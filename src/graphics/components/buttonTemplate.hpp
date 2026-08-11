@@ -3,10 +3,11 @@
 #include <SFML/Graphics.hpp>
 #include <functional>
 #include "utils/logger.hpp"
+#include "graphics/GUI_element.hpp"
 
 namespace graphics{
 
-class ButtonTemplate: public sf::Drawable{
+class ButtonTemplate: public graphics::GUI_element{
 public:    
     using ButtonCallback = std::function<void(ButtonTemplate&)>;
     ButtonTemplate(const sf::Font& font, const std::string& text, sf::Vector2f pos = {0.f, 0.f}, ButtonCallback callback = [](ButtonTemplate&){LOG_ERROR("No callback set");});

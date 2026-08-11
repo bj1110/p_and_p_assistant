@@ -26,6 +26,7 @@ void ButtonTemplate::setPosition(sf::Vector2f pos){
 
 
 void ButtonTemplate::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    states.transform *= getTransform();
     target.draw(shape_);
     target.draw(text_); 
 }

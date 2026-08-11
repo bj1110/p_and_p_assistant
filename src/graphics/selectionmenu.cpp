@@ -67,6 +67,7 @@ void SelectionMenu::highlightSelection(size_t idx){
 }
 
 void SelectionMenu::draw(sf::RenderTarget& target, sf::RenderStates states) const{
+    states.transform *= getTransform();
     target.draw(*base_button_);
     target.draw(*expand_button_);
     if(options_hidden_){

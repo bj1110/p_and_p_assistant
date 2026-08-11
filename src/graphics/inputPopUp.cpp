@@ -25,34 +25,62 @@ m_settings(settings), m_onsubmit(on_submit)
     m_shape.setOrigin(size.x / 2.f, size.y / 2.f);
     m_shape.setPosition(windowCenter);
 
-    auto bounds = m_title.getLocalBounds();
+    auto title_bounds = m_title.getLocalBounds();
     m_title.setOrigin(
-        bounds.getPosition().x + bounds.getSize().x / 2.f,
-        bounds.getPosition().y
+        title_bounds.getPosition().x + title_bounds.getSize().x / 2.f,
+        title_bounds.getPosition().y + title_bounds.getSize().y /2.f 
     );
 
     m_title.setPosition(
-        windowCenter.x,
-        windowCenter.y - size.y / 2.f + padding
+        windowCenter.x ,
+        windowCenter.y - size.y/2.f + title_bounds.getSize().y/2.f + padding
     );
 
     const float spacing = 15.f;
     const float labelSpacing = 5.f;
 
-    sf::Vector2f cb_pos {
-        windowCenter.x +  size.x / 2.7f ,
-        windowCenter.y - size.y/ 2.1f  
-        };
-    m_closeButton = std::make_unique<ResizingButton> (settings->font,"X", cb_pos, [this](ButtonTemplate&){this->close();} );
+
+    m_closeButton = std::make_unique<ResizingButton> (settings->font,"X", sf::Vector2f{0.f, 0.f}, [this](ButtonTemplate&){this->close();} );
     m_closeButton->setButtonColor(sf::Color{100, 100, 100, 70});
+    m_closeButton->setCharacterSize(10); 
+    m_closeButton->setShapesCornerSharpeness(6.f);
 
-    sf::Vector2f sb_pos {
-        cb_pos.x -3*spacing ,
-        windowCenter.y + size.y/ 2.f - 3*spacing 
-    };
+    auto shape_bounds = m_shape.getLocalBounds();
+    auto cb_bounds = m_closeButton->getLocalBounds();
+    m_closeButton->setOrigin(
+        cb_bounds.getPosition().x + cb_bounds.getSize().x / 2.f,
+        cb_bounds.getPosition().y + cb_bounds.getSize().y / 2.f
+    );
+    m_closeButton->setPosition({
+        windowCenter.x + size.x / 2.f
+            - padding
+            - cb_bounds.getSize().x / 2.f,
 
-    m_submit = std::make_unique<ResizingButton>(settings->font, "Submit", sb_pos, [this](ButtonTemplate&){submit();});
+        windowCenter.y - size.y / 2.f
+            + padding
+            + cb_bounds.getSize().y / 2.f
+    });
+
+
+    m_submit = std::make_unique<ResizingButton>(settings->font, "Submit",  sf::Vector2f{0.f, 0.f}, [this](ButtonTemplate&){submit();});
     m_submit->setButtonColor(sf::Color{100, 100, 100, 70});
+
+
+    auto submit_bounds = m_submit->getLocalBounds();
+    m_submit->setOrigin(
+        submit_bounds.getPosition().x + submit_bounds.getSize().x / 2.f,
+        submit_bounds.getPosition().y + submit_bounds.getSize().y / 2.f
+    );
+    m_submit->setPosition({
+        windowCenter.x + size.x / 2.f
+            - padding
+            - submit_bounds.getSize().x / 2.f,
+
+        windowCenter.y + size.y / 2.f
+            - padding
+            - submit_bounds.getSize().y / 2.f
+    });
+
 
     sf::Vector2f fieldSize{
         size.x - 40.f,
@@ -121,14 +149,14 @@ void InputPopUp::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     if(auto tmp = manager.lock()){
         tmp->focusElement(this);
     }
-    target.draw(m_shape);
-    target.draw(m_title);
-    target.draw(*m_closeButton);
+    target.draw(m_shape, states);
+    target.draw(m_title, states);
+    target.draw(*m_closeButton, states);
     for(const auto& field: m_fields){
-        target.draw(field.fieldname);
-        target.draw(field.field);
+        target.draw(field.fieldname, states);
+        target.draw(field.field, states);
     }
-    target.draw(*m_submit);
+    target.draw(*m_submit, states);
 }
 
 

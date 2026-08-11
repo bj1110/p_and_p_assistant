@@ -35,6 +35,9 @@ public:
     sf::Color getButtonColor()const;
     std::string getString()const; 
 
+    sf::FloatRect getGlobalBounds() const;
+    sf::FloatRect getLocalBounds() const;
+
 protected:
 void draw(sf::RenderTarget& target, sf::RenderStates states) const override; 
 bool isMouseOnButton(const float x, const float y) const; 

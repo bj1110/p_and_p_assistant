@@ -14,6 +14,8 @@ public:
 
     virtual void resize() override; 
 
+    void setCharacterSize(u_int size);
+
 };
 
 

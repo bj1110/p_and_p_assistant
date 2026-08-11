@@ -14,4 +14,9 @@ void ResizingButton::resize(){
     placeText(); 
 }  
 
+void ResizingButton::setCharacterSize(u_int size){
+    text_.setCharacterSize(size);
+    resize(); 
+}
+
 } //namespace graphics 

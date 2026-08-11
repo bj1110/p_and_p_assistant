@@ -20,15 +20,15 @@ void ButtonTemplate::setCallback(ButtonCallback callback){
 }
 
 void ButtonTemplate::setPosition(sf::Vector2f pos){
-    shape_.setPosition(pos);
+    sf::Transformable::setPosition(pos);
     placeText(); 
 }
 
 
 void ButtonTemplate::draw(sf::RenderTarget& target, sf::RenderStates states) const{
     states.transform *= getTransform();
-    target.draw(shape_);
-    target.draw(text_); 
+    target.draw(shape_, states);
+    target.draw(text_, states); 
 }
 
 void ButtonTemplate::setString(const std::string& str){
@@ -66,17 +66,10 @@ void ButtonTemplate::onMouseHover(const sf::Event::MouseMoveEvent& event){
     }
 }
 
-bool ButtonTemplate::isMouseOnButton(const float x, const float y) const{
-    const sf::FloatRect buttonBounds = shape_.getGlobalBounds();
-    const sf::Vector2f& buttonPos = buttonBounds.getPosition();
-    const sf::Vector2f& buttonSize = buttonBounds.getSize();
-    if(x < buttonPos.x || x > buttonPos.x + buttonSize.x){
-        return false;
-    }
-    if(y < buttonPos.y || y > buttonPos.y + buttonSize.y){
-        return false;
-    }
-    return true; 
+bool ButtonTemplate::isMouseOnButton(float x, float y) const{
+    const sf::FloatRect bounds = getGlobalBounds();
+
+    return bounds.contains({x, y});
 }
 
 void ButtonTemplate::handleEvent(const sf::Event& event){
@@ -93,14 +86,14 @@ const sf::Vector2f ButtonTemplate::getSize()const{
 }
 
 void ButtonTemplate::placeText(){
-    sf::FloatRect text_bounds = text_.getLocalBounds(); 
+    sf::FloatRect text_bounds = text_.getLocalBounds();
 
     text_.setOrigin({
         text_bounds.getPosition().x + text_bounds.getSize().x / 2.f,
         text_bounds.getPosition().y + text_bounds.getSize().y / 2.f
     });
-   
-    sf::FloatRect shape_bounds = shape_.getGlobalBounds();
+
+    sf::FloatRect shape_bounds = shape_.getLocalBounds();
 
     text_.setPosition({
         shape_bounds.getPosition().x + shape_bounds.getSize().x / 2.f,
@@ -119,5 +112,16 @@ sf::Color ButtonTemplate::getButtonColor()const{
 std::string ButtonTemplate::getString() const{
     return text_.getString();
 }
+
+sf::FloatRect ButtonTemplate::getGlobalBounds() const{
+    return getTransform().transformRect(
+        shape_.getLocalBounds()
+    );
+}
+
+sf::FloatRect ButtonTemplate::getLocalBounds() const{
+    return shape_.getLocalBounds();
+}
+
 
 } //namespace graphics

@@ -35,19 +35,14 @@ public:
         if(event.type == sf::Event::MouseButtonPressed){
             float x = event.mouseButton.x, y = event.mouseButton.y; 
             const sf::FloatRect bounds = m_shape.getGlobalBounds();
-            const sf::Vector2f& pos = bounds.getPosition();
-            const sf::Vector2f& size = bounds.getSize();
-            if(x < pos.x || x > pos.x + size.x){
-                isSelected=false;
-                return;
+            if(bounds.contains(x, y)){
+                m_isSelected = true; 
             }
-            if(y < pos.y || y > pos.y + size.y){
-                isSelected=false;
-                return;
+            else{
+                m_isSelected = false; 
             }
-            isSelected = true; 
         }
-        if(!isSelected){
+        if(!m_isSelected){
             return;
         }
         if(event.type == sf::Event::TextEntered){
@@ -83,6 +78,18 @@ public:
         return std::stoi(str.toAnsiString());
     }
 
+    bool is_selected()const{
+        return m_isSelected;
+    }
+
+    void select(){
+        m_isSelected=true;
+    }
+
+    void unselect(){
+        m_isSelected=false;
+    }
+
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override{
         target.draw(m_shape);
@@ -97,7 +104,7 @@ private:
 ButtonShape m_shape{};
 sf::Text m_text {};
 std::shared_ptr<core::Settings> m_settings{};
-bool isSelected = false;
+bool m_isSelected = false;
 Type m_type = Type::String;
 
 

@@ -142,6 +142,20 @@ void InputPopUp::handleEvent(const sf::Event& event){
     for(auto& field:m_fields){
         field.field.handleEvent(event);
     }
+    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Tab){
+        LOG_INFO("Tab pressed");
+        for(int i=0; i<m_fields.size(); ++i){
+            auto& field = m_fields[i];
+            if(field.field.is_selected()){
+                LOG_INFO(std::format("{} selected", i));
+                field.field.unselect();
+                if(i!=m_fields.size()-1){
+                    m_fields[i+1].field.select();
+                }
+                break;
+            }
+        }
+    }
     m_submit->handleEvent(event);
 }
 

@@ -22,7 +22,9 @@ int main(){
     window.setFramerateLimit(60);
     window.setVerticalSyncEnabled(false);
     
-    std::shared_ptr<core::Gameboard> gameboard = std::make_shared<core::Gameboard>();
+    std::shared_ptr<graphics::GUI_manager> gui_manager = std::make_shared<graphics::GUI_manager>();
+    
+    std::shared_ptr<core::Gameboard> gameboard = std::make_shared<core::Gameboard>(settings, gui_manager);
     gameboard->init(2, {2, 8, 10, 20, 100});
 
     auto player1 = std::make_shared<entities::Character>("Pete"); 
@@ -32,7 +34,6 @@ int main(){
 
     gameboard->getCharater("Pete")->addStat({"HP", 100, 10});
 
-    std::shared_ptr<graphics::GUI_manager> gui_manager = std::make_shared<graphics::GUI_manager>();
 
     std::shared_ptr<graphics::GUI_element> dicemenu = std::make_shared<graphics::DiceMenu>( 
         settings, 
@@ -55,34 +56,34 @@ int main(){
         LOG_WARN("Element was not added "); 
     }
 
-    std::vector<graphics::InputPopUp::InputType> fields {
-        {std::string{"Name"}, graphics::Textfield::Type::String}, 
-        {std::string{"Spitzname"},graphics::Textfield::Type::String},
-        {std::string{"Alter"}, graphics::Textfield::Type::Int}
-    };
-    std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
-        settings, 
-        sf::Vector2f{300.f, 500.f},
-        "Create Player",
-        fields,
-        [&fields](const graphics::InputResult& result){
-            for(const auto& field: fields){
-                if (field.type == graphics::Textfield::Type::String)
-                {
-                    LOG_INFO(std::get<std::string>(result.at(field.fieldname)));
-                }
-                else if (field.type == graphics::Textfield::Type::Int)
-                {
-                    LOG_INFO(std::to_string(std::get<int>(result.at(field.fieldname))));
-                }
-            }
-        }
-    );
-    if(!gui_manager->addElement(inputPopUp)){
-        LOG_WARN("Element was not added "); 
-    }
+    // std::vector<graphics::InputPopUp::InputType> fields {
+    //     {std::string{"Name"}, graphics::Textfield::Type::String}, 
+    //     {std::string{"Spitzname"},graphics::Textfield::Type::String},
+    //     {std::string{"Alter"}, graphics::Textfield::Type::Int}
+    // };
+    // std::shared_ptr<graphics::InputPopUp> inputPopUp = std::make_shared<graphics::InputPopUp>(
+    //     settings, 
+    //     sf::Vector2f{300.f, 500.f},
+    //     "Create Player",
+    //     fields,
+    //     [&fields](const graphics::InputResult& result){
+    //         for(const auto& field: fields){
+    //             if (field.type == graphics::Textfield::Type::String)
+    //             {
+    //                 LOG_INFO(std::get<std::string>(result.at(field.fieldname)));
+    //             }
+    //             else if (field.type == graphics::Textfield::Type::Int)
+    //             {
+    //                 LOG_INFO(std::to_string(std::get<int>(result.at(field.fieldname))));
+    //             }
+    //         }
+    //     }
+    // );
+    // if(!gui_manager->addElement(inputPopUp)){
+    //     LOG_WARN("Element was not added "); 
+    // }
 
-    gui_manager->focusAll();
+    // gui_manager->focusAll();
 
 
     while(window.isOpen()){

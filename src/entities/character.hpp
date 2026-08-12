@@ -8,14 +8,16 @@
 
 namespace entities{
 
-struct stat{
-    std::string name {"Default Stat"};
-    int max_value =0;
-    int curr_value =0;
-};
 
 class Character{
 public:
+    struct stat{
+        std::string name {"Default Stat"};
+        int max_value =0;
+        int curr_value =0;
+    };
+
+
     Character(std::string name);
     Character(std::string name, std::vector<stat> stats);
     bool addStat(stat stat);

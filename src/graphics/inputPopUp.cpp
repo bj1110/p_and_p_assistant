@@ -130,6 +130,7 @@ m_settings(settings), m_onsubmit(on_submit)
 
 void InputPopUp::close(){
     if(auto tmp= manager.lock()){
+        tmp->focusAll();
         if (!tmp ->removeElement(this)){
             LOG_ERROR("Couldn't close");
         }

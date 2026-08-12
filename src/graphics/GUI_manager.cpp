@@ -8,7 +8,9 @@ namespace graphics
     
 void GUI_manager::handleEvent(const sf::Event& event){
     for(const auto& elem: gui_elements){
-        elem->handleEvent(event);
+        if(elem->isFocussed()){
+            elem->handleEvent(event);
+        }
     }
 }
 
@@ -48,6 +50,8 @@ void GUI_manager::update(){
             }
         }
     }
+
+    m_deletion.clear(); 
     focusAll(); 
 }
 

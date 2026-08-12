@@ -3,6 +3,7 @@
 #include <memory>
 #include "graphics/GUI_element.hpp"
 #include <SFML/Graphics.hpp>
+#include "utils/logger.hpp"
 
 
 

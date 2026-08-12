@@ -49,10 +49,9 @@ void GUI_manager::update(){
                 }
             }
         }
+        focusAll(); 
     }
-
     m_deletion.clear(); 
-    focusAll(); 
 }
 
 void GUI_manager::focusElement(const GUI_element* element){
